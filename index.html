@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Song and Rhyme Database</title>
+  <title>Find My Rhyme</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 <body>
 
-<h1>Search</h1>
+<h1>Songs / Rhymes</h1>
 <input type="text" id="search" placeholder="Search keywords...">
-
 <ul id="list"></ul>
 
 <script src="app.js"></script>

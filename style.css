@@ -1,95 +1,95 @@
-/* ------------------------- */
-/* Basic reset & body styles */
-/* ------------------------- */
+/* Body & font */
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  font-family: 'Roboto', sans-serif;
   background-color: #f7f7f7;
   color: #333;
+  margin: 20px;
 }
 
-/* ------------------------- */
-/* Responsive adjustments */
-/* ------------------------- */
-@media (max-width: 600px) {
-  body {
-    margin: 10px;
-  }
-  #list li {
-    font-size: 14px;
-    padding: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-
-  #search {
-    font-size: 14px;
-  }
-}
-
-/* ------------------------- */
-/* Search bar styles */
-/* ------------------------- */
+/* Search bar */
 #search {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  padding: 12px;
   font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
 #search:focus {
   border-color: #1a73e8;
-  outline: none;
   box-shadow: 0 0 5px rgba(26,115,232,0.3);
+  outline: none;
 }
 
-/* ------------------------- */
-/* List items / cards */
-/* ------------------------- */
+/* List item card */
 #list li {
   background: #fff;
-  margin-bottom: 10px;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  list-style: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+/* Row header */
+.row-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  transition: box-shadow 0.2s ease;
-}
-
-#list li:hover {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-/* ------------------------- */
-/* Links inside list items */
-/* ------------------------- */
-#list a {
-  text-decoration: none;
-  color: #1a73e8;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-/* ------------------------- */
-/* Favorite button */
-/* ------------------------- */
-#list button {
-  background: none;
-  border: none;
-  font-size: 18px;
+  align-items: flex-start; /* star aligns top */
   cursor: pointer;
 }
 
+.header-text {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Favorite star */
+#list button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
 #list button.fav {
-  color: gold;   /* favorite is gold */
+  color: gold;
 }
 
 #list button:not(.fav) {
-  color: #ccc;   /* non-favorite is gray */
+  color: #ccc;
+}
+
+/* Collapsible details */
+.row-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  font-size: 14px;
+  color: #555;
+  padding-left: 8px;
+  margin-top: 8px;
+}
+
+.row-details a {
+  color: #1a73e8;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  body {
+    margin: 10px;
+  }
+  .row-header {
+    flex-direction: column;
+  }
+  #list button {
+    margin-top: 8px;
+    align-self: flex-end;
+  }
 }
