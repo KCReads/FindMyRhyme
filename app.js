@@ -1,11 +1,12 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEiXufRP7C_pdB3ZHz4WB82Zg5JmLSUg_BvjoC7xM5BDqG5PhdZOFg/pub?gid=1251597746&single=true&output=csv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEiXufRP7C_pdB3ZHz4WB82Zg5JmLSUg_BvjoC7xM5BDqG5PhdZOFg/pub?gid=1251597746&single=true&output=csv"; // <-- Replace with your published Google Sheet CSV link
 
 let data = [];
 
+// Fetch data from Google Sheets
 fetch(sheetURL)
   .then(res => res.text())
   .then(csv => {
-    const rows = csv.split("\n").slice(1);
+    const rows = csv.split("\n").slice(1); // skip header row
     data = rows.map(row => {
       const cols = row.split(",");
       return {
@@ -18,28 +19,32 @@ fetch(sheetURL)
     render(data);
   });
 
+// Render the list
 function render(items) {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  items.forEach((item, index) => {
-    const li = document.createElement("li");
+  // Get favorites from localStorage
+  const favs = JSON.parse(localStorage.getItem("favs") || "[]");
 
-    const favs = JSON.parse(localStorage.getItem("favs") || "[]");
+  items.forEach((item, index) => {
     const isFav = favs.includes(index);
 
+    const li = document.createElement("li");
+
     li.innerHTML = `
-      <b>${item.title}</b> (${item.creator})<br>
-      <a href="${item.link}" target="_blank">Open</a>
-      <button onclick="toggleFav(${index})">
-        ${isFav ? "★" : "☆"}
-      </button>
+      <div>
+        <b>${item.title}</b> (${item.creator})<br>
+        <a href="${item.link}" target="_blank">Open</a>
+      </div>
+      <button class="${isFav ? 'fav' : ''}" onclick="toggleFav(${index})">★</button>
     `;
 
     list.appendChild(li);
   });
 }
 
+// Search functionality
 document.getElementById("search").addEventListener("input", e => {
   const value = e.target.value.toLowerCase();
 
@@ -50,6 +55,7 @@ document.getElementById("search").addEventListener("input", e => {
   render(filtered);
 });
 
+// Toggle favorite
 function toggleFav(index) {
   let favs = JSON.parse(localStorage.getItem("favs") || "[]");
 
@@ -60,5 +66,5 @@ function toggleFav(index) {
   }
 
   localStorage.setItem("favs", JSON.stringify(favs));
-  render(data);
+  render(data); // re-render to update star color
 }
