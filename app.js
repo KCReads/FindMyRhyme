@@ -13,8 +13,8 @@ Papa.parse(sheetURL, {
       title: row["Title"],
       keywords: row["Keywords"],
       creator: row["Creator"],
-      videoLink: row["Video"],
-      supplementalLink: row["Supplemental"]
+      video: row["Video"],
+      supplemental: row["Supplemental"]
     }));
 
     render(data);
