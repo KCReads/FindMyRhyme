@@ -48,17 +48,23 @@ function render(items) {
         <div>🎵 Keywords: ${item.keywords}</div>
 
         <div class="links-row">
-          <div>
-            🎬 Video:
-            <a href="${item.videoLink}" target="_blank">${item.videoLink}</a>
-          </div>
+       <div class="links-row">
 
-          <div>
-            🔗 Supplemental:
-            ${item.supplementalLink
-              ? `<a href="${item.supplementalLink}" target="_blank">${item.supplementalLink}</a>`
-              : "—"}
-          </div>
+  <div>
+    🎬 Video:
+    <a href="${item.videoLink}" target="_blank">Watch</a>
+  </div>
+
+  ${item.supplementalLink ? `
+  <div>
+    🔗 Supplemental:
+    <a href="${item.supplementalLink}" target="_blank">Open</a>
+  </div>
+  ` : `
+  <div>🔗 Supplemental: —</div>
+  `}
+
+</div>
         </div>
       </div>
     `;
