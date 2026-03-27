@@ -14,13 +14,13 @@ Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEiXufRP7
   complete: function (results) {
 
     data = results.data.map((row) => ({
-      id: String(row.id), // your 1001 column
-      title: row.title || "",
-      keywords: row.keywords || "",
-      creator: row.creator || "",
-      video: row.video || "",
-      supplemental: row.supplemental || ""
-    }));
+  id: String(row.ID || row.id),
+  title: row.Title || "",
+  keywords: row.Keywords || "",
+  creator: row.Creator || "",
+  video: row.Video || "",
+  supplemental: row.Supplemental || ""
+}));
 
     render(data);
   }
