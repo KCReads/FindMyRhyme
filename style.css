@@ -1,15 +1,13 @@
 /* =========================
-   BASE / SYSTEM
+   BASE
 ========================= */
 :root {
   --bg: #f7f9fc;
-  --card: #ffffff;
   --text: #1f2937;
   --muted: #6b7280;
-  --border: #e5e7eb;
-  --shadow: 0 2px 10px rgba(0,0,0,0.05);
 
-  /* soft rainbow palette */
+  --border: #e5e7eb;
+
   --red: #ff6b6b;
   --orange: #ffa94d;
   --yellow: #ffd43b;
@@ -21,73 +19,48 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 16px;
+  padding: 12px;
   background: var(--bg);
   color: var(--text);
 }
 
 /* =========================
-   APP LAYOUT (IMPORTANT)
+   LIST WRAPPER
 ========================= */
 #list {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 12px;
-}
-
-/* desktop: 2–3 columns depending on space */
-@media (min-width: 900px) {
-  #list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1300px) {
-  #list {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  padding: 0 8px;
 }
 
 /* =========================
-   INPUT AREA
-========================= */
-input, select {
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  font-size: 14px;
-  outline: none;
-  margin-right: 8px;
-}
-
-input:focus, select:focus {
-  border-color: var(--blue);
-}
-
-/* =========================
-   CARD (LIBRARY ENTRY)
+   ROW CARD (FULL WIDTH ENTRY)
 ========================= */
 .card {
-  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  background: #fff;
   border: 1px solid var(--border);
   border-left: 6px solid var(--blue);
-  border-radius: 16px;
-  padding: 12px;
 
-  box-shadow: var(--shadow);
+  border-radius: 12px;
+  padding: 10px 12px;
+
+  margin-bottom: 10px;
+
   transition: 0.15s ease;
-
-  height: fit-content;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
-/* rainbow indexing (subtle catalog feel) */
+/* rainbow stripe per row */
 .card:nth-child(6n+1) { border-left-color: var(--red); }
 .card:nth-child(6n+2) { border-left-color: var(--orange); }
 .card:nth-child(6n+3) { border-left-color: var(--yellow); }
@@ -96,17 +69,17 @@ input:focus, select:focus {
 .card:nth-child(6n+6) { border-left-color: var(--purple); }
 
 /* =========================
-   HEADER ROW
+   LEFT SIDE (TITLE + STAR)
 ========================= */
 .top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
+
+  min-width: 260px;
+  flex: 1;
 }
 
-/* =========================
-   FAVORITE STAR
-========================= */
 .star {
   font-size: 18px;
   border: none;
@@ -114,13 +87,7 @@ input:focus, select:focus {
   cursor: pointer;
   opacity: 0.35;
   transition: 0.2s;
-  padding: 4px;
   flex-shrink: 0;
-}
-
-.star:hover {
-  transform: scale(1.15);
-  opacity: 0.7;
 }
 
 .star.on {
@@ -128,12 +95,13 @@ input:focus, select:focus {
   opacity: 1;
 }
 
-/* =========================
-   TITLE AREA
-========================= */
+.star:hover {
+  transform: scale(1.15);
+}
+
 .title-block {
-  flex: 1;
-  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -149,24 +117,25 @@ input:focus, select:focus {
 }
 
 /* =========================
-   KEYWORDS (SCANABLE TAGS)
+   KEYWORDS (CENTER)
 ========================= */
 .keywords {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+
+  flex: 2;
 }
 
 .pill {
   font-size: 11px;
-  padding: 4px 8px;
+  padding: 3px 7px;
   border-radius: 999px;
   border: 1px solid var(--border);
   white-space: nowrap;
 }
 
-/* soft rainbow tags */
+/* soft rainbow pills */
 .pill:nth-child(5n+1) { background: #ffe3e3; }
 .pill:nth-child(5n+2) { background: #fff3bf; }
 .pill:nth-child(5n+3) { background: #d3f9d8; }
@@ -174,20 +143,21 @@ input:focus, select:focus {
 .pill:nth-child(5n+5) { background: #e5dbff; }
 
 /* =========================
-   LINKS (ACTION BUTTONS)
+   RIGHT SIDE ACTIONS
 ========================= */
 .links {
-  margin-top: 10px;
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .icon-link {
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: none;
-  padding: 6px 10px;
-  border-radius: 10px;
+
+  padding: 5px 8px;
+  border-radius: 8px;
 
   border: 1px solid var(--border);
 
@@ -196,17 +166,14 @@ input:focus, select:focus {
   gap: 6px;
 
   color: var(--text);
-  transition: 0.15s ease;
-}
+  background: #f8fafc;
 
-/* type-based color coding */
-.icon-link:nth-of-type(1) { background: #e7f5ff; } /* video */
-.icon-link:nth-of-type(2) { background: #fff4e6; } /* guide */
-.icon-link:nth-of-type(3) { background: #f3f0ff; } /* link */
+  transition: 0.15s;
+}
 
 .icon-link:hover {
   transform: translateY(-1px);
-  filter: brightness(0.98);
+  background: #eef2ff;
 }
 
 /* =========================
