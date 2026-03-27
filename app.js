@@ -1,7 +1,7 @@
-const sheetURL = "YOUR_CSV_LINK"; // Replace with your published Google Sheet CSV link
+const sheetURL = "YOUR_CSV_LINK"; // ← replace this
 let data = [];
 
-// Load CSV using PapaParse
+// Load data
 Papa.parse(sheetURL, {
   download: true,
   header: true,
@@ -22,6 +22,11 @@ function render(items) {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
+  if (items.length === 0) {
+    list.innerHTML = "<p>No results found</p>";
+    return;
+  }
+
   const favs = JSON.parse(localStorage.getItem("favs") || "[]");
 
   items.forEach((item, index) => {
@@ -34,9 +39,10 @@ function render(items) {
         <button class="${isFav ? 'fav' : ''}" onclick="toggleFav(${index}); event.stopPropagation();">★</button>
         <div class="header-text">${item.title} - ${item.creator}</div>
       </div>
+
       <div class="row-details">
-        <div>Keywords: ${item.keywords}</div>
-        <div>Link: <a href="${item.link}" target="_blank">${item.link}</a></div>
+        <div>🎵 Keywords: ${item.keywords}</div>
+        <div>🔗 Link: <a href="${item.link}" target="_blank">${item.link}</a></div>
       </div>
     `;
 
@@ -47,27 +53,32 @@ function render(items) {
 // Search
 document.getElementById("search").addEventListener("input", e => {
   const value = e.target.value.toLowerCase();
+
   const filtered = data.filter(item =>
     item.keywords.toLowerCase().includes(value)
   );
+
   render(filtered);
 });
 
-// Toggle favorites
+// Favorites
 function toggleFav(index) {
   let favs = JSON.parse(localStorage.getItem("favs") || "[]");
+
   if (favs.includes(index)) {
     favs = favs.filter(i => i !== index);
   } else {
     favs.push(index);
   }
+
   localStorage.setItem("favs", JSON.stringify(favs));
   render(data);
 }
 
-// Toggle row details
+// Accordion toggle
 function toggleDetails(header) {
   const details = header.nextElementSibling;
+
   if (details.style.maxHeight) {
     details.style.maxHeight = null;
   } else {
