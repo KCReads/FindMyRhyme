@@ -6,25 +6,24 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
+
 <body>
 
-<h1 class="app-title">Find My Rhyme</h1>
-<p class="subtitle">Search a growing database of songs and rhymes for storytime</p>
+<h1>Find My Rhyme</h1>
 
-  <input type="text" id="search" placeholder="Search keywords...">
-  
-  <select id="searchMode">
+<!-- SEARCH CONTROLS -->
+<select id="searchMode">
   <option value="all">All Fields</option>
   <option value="title">Title</option>
   <option value="keywords">Keywords</option>
   <option value="creator">Creator</option>
 </select>
 
+<input type="text" id="search" placeholder="Search...">
 
+<!-- RESULTS -->
 <ul id="list"></ul>
 
 <script src="app.js"></script>
