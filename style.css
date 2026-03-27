@@ -155,4 +155,9 @@ ul {
   color: #999;
   padding: 10px 0;
 }
+  .video-block {
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+}
 }
