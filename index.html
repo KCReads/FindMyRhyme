@@ -1,38 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Find My Rhyme</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css"/>
 
-  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- PapaParse (CSV loader) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 
 <body>
 
-<h1>Find My Rhyme</h1>
+  <header>
+    <h1>Find My Rhyme</h1>
+  </header>
 
-<!-- SEARCH CONTROLS -->
-<input type="text" id="search" placeholder="Search...">
-  <select id="searchMode">
-  <option value="all">All Fields</option>
-  <option value="title">Title</option>
-  <option value="keywords">Keywords</option>
-  <option value="creator">Creator</option>
-</select>
-<label>
-  <input type="checkbox" id="favoritesOnly">
-  Favorites only
-</label>
+  <!-- 🔍 SEARCH CONTROLS -->
+  <section class="controls">
 
-  <p class="disclaimer">
-  ⭐ Favorites are stored locally in your browser and will not sync across devices.
-</p>
+    <input
+      type="text"
+      id="search"
+      placeholder="Search songs, keywords, creators..."
+    />
 
-<!-- RESULTS -->
-<ul id="list"></ul>
+    <select id="searchMode">
+      <option value="all">All</option>
+      <option value="title">Title</option>
+      <option value="keywords">Keywords</option>
+      <option value="creator">Creator</option>
+    </select>
 
-<script src="app.js"></script>
+    <label class="favorites-toggle">
+      <input type="checkbox" id="favoritesOnly" />
+      Favorites only
+    </label>
+
+  </section>
+
+  <!-- 📋 LIST -->
+  <main>
+    <ul id="list"></ul>
+  </main>
+
+  <!-- JS -->
+  <script src="app.js"></script>
+
 </body>
 </html>
