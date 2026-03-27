@@ -64,7 +64,9 @@ function createCard(item, index) {
   card.innerHTML = `
     <div class="top">
 
-      <button class="star ${isFav ? "on" : "off"}">★</button>
+      <button class="star ${isFav ? "on" : "off"}" title="Favorite">
+        ★
+      </button>
 
       <div class="title-block">
         <div class="title"></div>
@@ -73,35 +75,54 @@ function createCard(item, index) {
 
     </div>
 
-    <div class="body">
+    <div class="keywords"></div>
 
-      <div class="keywords"></div>
+    <div class="links">
 
-      <div class="links">
+      ${item.video ? `
+        <a href="${item.video}" target="_blank" class="icon-link">
+          🎬 Video
+        </a>
+      ` : ""}
 
-        ${item.video
-          ? `<a href="${item.video}" target="_blank">▶ Video</a>`
-          : ""}
+      ${item.supplemental ? `
+        <a href="${item.supplemental}" target="_blank" class="icon-link">
+          📄 Guide
+        </a>
+      ` : ""}
 
-        ${item.supplemental
-          ? `<a href="${item.supplemental}" target="_blank">📄 Supplemental</a>`
-          : ""}
-
-        ${item.link
-          ? `<a href="${item.link}" target="_blank">🔗 Main Link</a>`
-          : ""}
-
-      </div>
+      ${item.link ? `
+        <a href="${item.link}" target="_blank" class="icon-link">
+          🔗 Link
+        </a>
+      ` : ""}
 
     </div>
   `;
 
   card.querySelector(".title").textContent = item.title || "";
   card.querySelector(".creator").textContent = item.creator || "";
-  card.querySelector(".keywords").textContent = item.keywords || "";
 
-  card.querySelector(".star").addEventListener("click", (e) => {
-    toggleFavorite(id, e.target);
+  /* KEYWORDS → pill formatting */
+  const keywordsEl = card.querySelector(".keywords");
+
+  const keywords = (item.keywords || "")
+    .split(",")
+    .map(k => k.trim())
+    .filter(Boolean);
+
+  keywords.forEach(k => {
+    const pill = document.createElement("span");
+    pill.className = "pill";
+    pill.textContent = k;
+    keywordsEl.appendChild(pill);
+  });
+
+  /* STAR ICON */
+  const starBtn = card.querySelector(".star");
+
+  starBtn.addEventListener("click", () => {
+    toggleFavorite(id, starBtn);
   });
 
   return card;
