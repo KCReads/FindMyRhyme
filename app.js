@@ -40,7 +40,8 @@ function render(items) {
 
     const isFav = favorites.includes(item.id);
 
-    const li = document.createElement("li");
+    const li = document.createElement("div");
+li.className = "row";
 
     li.innerHTML = `
       <div class="row-top">
