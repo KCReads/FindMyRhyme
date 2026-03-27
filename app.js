@@ -104,3 +104,14 @@ function render(items) {
     list.appendChild(li);
   });
 }
+// Favorites
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  render(data);
+}
