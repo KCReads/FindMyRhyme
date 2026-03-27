@@ -74,15 +74,36 @@ function render(items) {
 }
 
 // Search
-document.getElementById("search").addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
+const searchInput = document.getElementById("search");
+const searchMode = document.getElementById("searchMode");
 
-  const filtered = data.filter(item =>
-    (item.keywords || "").toLowerCase().includes(value)
-  );
+searchInput.addEventListener("input", filterData);
+searchMode.addEventListener("change", filterData);
+
+function filterData() {
+  const value = searchInput.value.toLowerCase();
+  const mode = searchMode.value;
+
+  const filtered = data.filter(item => {
+
+    const title = (item.title || "").toLowerCase();
+    const keywords = (item.keywords || "").toLowerCase();
+    const creator = (item.creator || "").toLowerCase();
+
+    if (mode === "title") return title.includes(value);
+    if (mode === "keywords") return keywords.includes(value);
+    if (mode === "creator") return creator.includes(value);
+
+    // default = all
+    return (
+      title.includes(value) ||
+      keywords.includes(value) ||
+      creator.includes(value)
+    );
+  });
 
   render(filtered);
-});
+}
 
 // Favorites
 function toggleFav(index) {
