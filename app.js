@@ -50,18 +50,18 @@ function render(items) {
         <div class="links-row">
        <div class="links-row">
 
-  <div>
-    🎬 Video:
-    <a href="${item.videoLink}" target="_blank">Watch</a>
-  </div>
+  <div class="links-row">
+
+  <a class="link-btn video-btn" href="${item.videoLink}" target="_blank">
+    🎬 Watch Video
+  </a>
 
   ${item.supplementalLink ? `
-  <div>
-    🔗 Supplemental:
-    <a href="${item.supplementalLink}" target="_blank">Open</a>
-  </div>
+    <a class="link-btn supp-btn" href="${item.supplementalLink}" target="_blank">
+      🔗 Supplemental
+    </a>
   ` : `
-  <div>🔗 Supplemental: —</div>
+    <span class="link-empty">🔗 No Supplemental Link</span>
   `}
 
 </div>
