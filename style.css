@@ -54,3 +54,18 @@ button.star {
   color: #777;
   margin-top: 10px;
 }
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.star-on {
+  color: gold;
+}
+
+.star-off {
+  color: #ccc;
+}
