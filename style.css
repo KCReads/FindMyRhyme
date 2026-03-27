@@ -1,3 +1,7 @@
+/* =========================
+   BASE PAGE
+========================= */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -5,82 +9,159 @@ body {
   background: #f6f7fb;
 }
 
+/* Header */
 h1 {
   margin-bottom: 10px;
 }
 
-#searchMode, #search {
+/* =========================
+   CONTROLS (SEARCH AREA)
+========================= */
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#search,
+#searchMode {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   border-radius: 8px;
   border: 1px solid #ddd;
   font-size: 14px;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.favorites-toggle {
+  font-size: 13px;
+  color: #444;
 }
 
-li {
+/* =========================
+   LIST CONTAINER
+========================= */
+
+#list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.row {
   background: white;
-  margin-bottom: 12px;
+  border-radius: 12px;
   padding: 12px;
-  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.links {
-  margin-top: 8px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-a {
-  text-decoration: none;
-  color: #1a73e8;
-}
-
-button.star {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
-.disclaimer {
-  font-size: 12px;
-  color: #777;
-  margin-top: 10px;
-}
-.star-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.star-on { color: gold; }
-.star-off { color: #ccc; }
-
+/* TOP ROW */
 .row-top {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.expand-btn {
-  margin-left: auto;
-  cursor: pointer;
+/* =========================
+   STAR BUTTON
+========================= */
+
+.star-btn {
   background: none;
   border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
 }
 
-.row-body.hidden {
+.star-on {
+  color: gold;
+}
+
+.star-off {
+  color: #ccc;
+}
+
+/* =========================
+   TITLE AREA
+========================= */
+
+.title-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.creator {
+  font-size: 12px;
+  color: #666;
+}
+
+/* =========================
+   EXPAND BUTTON
+========================= */
+
+.expand-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+/* =========================
+   EXPANDED SECTION
+========================= */
+
+.row-body {
+  margin-top: 10px;
+}
+
+.hidden {
   display: none;
 }
 
+/* =========================
+   KEYWORDS
+========================= */
+
+.keywords {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .links a {
-  margin-right: 10px;
+  text-decoration: none;
+  color: #1a73e8;
+  font-size: 12px;
+}
+
+/* =========================
+   OPTIONAL: HOVER EFFECT
+========================= */
+
+.row:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
 }
