@@ -10,12 +10,12 @@ Papa.parse(sheetURL, {
   complete: function(results) {
 
     data = results.data.map(row => ({
-      title: row["Title"],
-      keywords: row["Keywords"],
-      creator: row["Creator"],
-      video: row["Video"],
-      supplemental: row["Supplemental"]
-    }));
+  title: row["Title"] || "",
+  keywords: row["Keywords"] || "",
+  creator: row["Creator"] || "",
+  videoLink: row["Video"] || "",
+  supplementalLink: row["Supplemental"] || ""
+}));
 
     render(data);
   }
