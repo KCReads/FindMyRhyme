@@ -157,3 +157,24 @@ input:focus, select:focus {
   text-align: center;
   margin-top: 20px;
 }
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --primary: #3b82f6;     /* blue accent */
+  --primary-soft: #eaf2ff;
+
+  --border: #e5e7eb;
+
+  --shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+}
