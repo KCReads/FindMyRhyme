@@ -99,7 +99,7 @@ function render(items) {
 /***********************
  * FAVORITES
  ***********************/
-window.toggleFavorite = function(id) {
+function toggleFavorite(id) {
   id = String(id);
 
   if (favorites.includes(id)) {
@@ -109,6 +109,7 @@ window.toggleFavorite = function(id) {
   }
 
   localStorage.setItem("favorites", JSON.stringify(favorites));
+
   render(data);
 };
 
