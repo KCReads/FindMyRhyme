@@ -2,22 +2,22 @@ const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEi
 
 let data = [];
 
-// Load data
+// Load CSV
 Papa.parse(sheetURL, {
   download: true,
   header: true,
   skipEmptyLines: true,
   complete: function(results) {
+
     data = results.data.map(row => ({
-      title: row.Title,
-      keywords: row.Keywords,
-      creator: row.Creator,
-      video: row.Video
-      supplementalLink: row.Supplemental
-}));
+      title: row["Title"],
+      keywords: row["Keywords"],
+      creator: row["Creator"],
+      videoLink: row["Video"],
+      supplementalLink: row["Supplemental"]
     }));
+
     render(data);
-    console.log(results.data[0]);
   }
 });
 
@@ -26,7 +26,7 @@ function render(items) {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  if (items.length === 0) {
+  if (!items.length) {
     list.innerHTML = "<p>No results found</p>";
     return;
   }
@@ -46,7 +46,20 @@ function render(items) {
 
       <div class="row-details">
         <div>🎵 Keywords: ${item.keywords}</div>
-        <div>🔗 Link: <a href="${item.link}" target="_blank">${item.link}</a></div>
+
+        <div class="links-row">
+          <div>
+            🎬 Video:
+            <a href="${item.videoLink}" target="_blank">${item.videoLink}</a>
+          </div>
+
+          <div>
+            🔗 Supplemental:
+            ${item.supplementalLink
+              ? `<a href="${item.supplementalLink}" target="_blank">${item.supplementalLink}</a>`
+              : "—"}
+          </div>
+        </div>
       </div>
     `;
 
@@ -59,7 +72,7 @@ document.getElementById("search").addEventListener("input", e => {
   const value = e.target.value.toLowerCase();
 
   const filtered = data.filter(item =>
-    item.keywords.toLowerCase().includes(value)
+    (item.keywords || "").toLowerCase().includes(value)
   );
 
   render(filtered);
@@ -79,7 +92,7 @@ function toggleFav(index) {
   render(data);
 }
 
-// Accordion toggle
+// Accordion
 function toggleDetails(header) {
   const details = header.nextElementSibling;
 
