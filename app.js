@@ -38,22 +38,33 @@ function render(items) {
 
   items.forEach((item) => {
 
-    const isFav = favorites.includes(item.id);
+    const isFav = favorites.includes(String(item.id));
 
-    const li = document.createElement("div");
-li.className = "row";
+    const row = document.createElement("div");
+    row.className = "row";
+    row.dataset.id = item.id;
 
-    li.innerHTML = `
+    row.innerHTML = `
       <div class="row-top">
 
-        <button class="star-btn ${isFav ? "star-on" : "star-off"}"
-          onclick="toggleFavorite('${item.id}')">
+        <button
+          class="star-btn ${isFav ? "star-on" : "star-off"}"
+          onclick="toggleFavorite('${item.id}')"
+          title="Favorite"
+        >
           ★
         </button>
 
-        <strong>${item.title}</strong> — ${item.creator}
+        <div class="title-block">
+          <div class="title">${item.title || "---"}</div>
+          <div class="creator">${item.creator || ""}</div>
+        </div>
 
-        <button class="expand-btn" onclick="toggleExpand(this)">
+        <button
+          class="expand-btn"
+          onclick="toggleExpand(this)"
+          title="More info"
+        >
           ▼
         </button>
 
@@ -62,7 +73,7 @@ li.className = "row";
       <div class="row-body hidden">
 
         <div class="keywords">
-          ${item.keywords}
+          ${item.keywords || ""}
         </div>
 
         <div class="links">
@@ -80,7 +91,7 @@ li.className = "row";
       </div>
     `;
 
-    list.appendChild(li);
+    list.appendChild(row);
   });
 }
 
