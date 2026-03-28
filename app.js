@@ -1,18 +1,8 @@
 let allData = [];
 let favorites = new Set();
 
-// LOAD CSV
-fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQ14cW0LzMG6hPjkdWry9d_X8P_Uag-M84cN00o317GK9CCJVuknQkgbTE-O60P54wU7Wd_Uxkuna2h/pub?gid=1251597746&single=true&output=csv")
-  .then(res => res.text())
-  .then(csv => {
-    const parsed = Papa.parse(csv, {
-      header: true,
-      skipEmptyLines: true
-    });
-
-    allData = parsed.data;
-    renderList(allData);
-  });
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ14cW0LzMG6hPjkdWry9d_X8P_Uag-M84cN00o317GK9CCJVuknQkgbTE-O60P54wU7Wd_Uxkuna2h/pub?gid=1251597746&single=true&output=csv";
 
 // DOM
 const searchInput = document.getElementById("search");
@@ -20,35 +10,65 @@ const searchMode = document.getElementById("searchMode");
 const favoritesOnly = document.getElementById("favoritesOnly");
 const list = document.getElementById("list");
 
+// LOAD CSV
+fetch(SHEET_URL)
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error ${res.status}`);
+    }
+    return res.text();
+  })
+  .then((csv) => {
+    const parsed = Papa.parse(csv, {
+      header: true,
+      skipEmptyLines: true
+    });
+
+    allData = parsed.data;
+    renderList(allData);
+  })
+  .catch((err) => {
+    console.error("Failed to load CSV:", err);
+    list.innerHTML = `<div style="padding:16px;">Could not load data.</div>`;
+  });
+
 // EVENTS
 searchInput.addEventListener("input", filterAndRender);
 searchMode.addEventListener("change", filterAndRender);
 favoritesOnly.addEventListener("change", filterAndRender);
 
+function safeValue(value) {
+  return (value || "").toString().toLowerCase().trim();
+}
+
 // FILTER
 function filterAndRender() {
-  const query = searchInput.value.toLowerCase().trim();
+  const query = safeValue(searchInput.value);
   const mode = searchMode.value;
   const favOnly = favoritesOnly.checked;
 
-  const filtered = allData.filter(item => {
+  const filtered = allData.filter((item) => {
+    const itemId = String(item.ID || "");
 
-    if (favOnly && !favorites.has(item.title)) {
+    if (favOnly && !favorites.has(itemId)) {
       return false;
     }
 
-    if (!query) return true;
+    if (!query) {
+      return true;
+    }
 
-    const title = (item.title || "").toLowerCase();
-    const creator = (item.creator || "").toLowerCase();
-    const keywords = (item.keywords || "").toLowerCase();
-    const language = (item.language || "").toLowerCase();
+    const title = safeValue(item.Title);
+    const creator = safeValue(item.Creator);
+    const keywords = safeValue(item.Keywords);
+    const language = safeValue(item.Language);
 
     if (mode === "all") {
       return (
         title.includes(query) ||
         creator.includes(query) ||
-        keywords.includes(query)
+        keywords.includes(query) ||
+        language.includes(query)
       );
     }
 
@@ -67,7 +87,9 @@ function filterAndRender() {
 function renderList(data) {
   list.innerHTML = "";
 
-  data.forEach(item => {
+  data.forEach((item) => {
+    const itemId = String(item.ID || "");
+
     const card = document.createElement("div");
     card.className = "card";
 
@@ -77,24 +99,29 @@ function renderList(data) {
 
     const title = document.createElement("div");
     title.className = "title";
-    title.textContent = item.title || "";
+    title.textContent = item.Title || "";
 
     const creator = document.createElement("div");
     creator.className = "creator";
-    creator.textContent = item.creator || "";
+    creator.textContent = item.Creator || "";
+
+    const language = document.createElement("div");
+    language.className = "creator";
+    language.textContent = item.Language || "";
 
     top.appendChild(title);
     top.appendChild(creator);
+    top.appendChild(language);
 
     // MIDDLE
     const keywords = document.createElement("div");
     keywords.className = "keywords";
 
-    (item.keywords || "")
+    (item.Keywords || "")
       .split(",")
-      .map(k => k.trim())
+      .map((k) => k.trim())
       .filter(Boolean)
-      .forEach(k => {
+      .forEach((k) => {
         const pill = document.createElement("span");
         pill.className = "pill";
         pill.textContent = k;
@@ -108,17 +135,18 @@ function renderList(data) {
     // STAR
     const star = document.createElement("button");
     star.className = "star";
-
-    const isFav = favorites.has(item.title);
-
+    star.type = "button";
     star.textContent = "★";
-    if (isFav) star.classList.add("fav");
+
+    if (favorites.has(itemId)) {
+      star.classList.add("fav");
+    }
 
     star.addEventListener("click", () => {
-      if (favorites.has(item.title)) {
-        favorites.delete(item.title);
+      if (favorites.has(itemId)) {
+        favorites.delete(itemId);
       } else {
-        favorites.add(item.title);
+        favorites.add(itemId);
       }
 
       filterAndRender();
@@ -126,15 +154,26 @@ function renderList(data) {
 
     links.appendChild(star);
 
-    // OPTIONAL LINK
-    if (item.link) {
-      const link = document.createElement("a");
-      link.className = "icon-link";
-      link.href = item.link;
-      link.target = "_blank";
-      link.textContent = "Open";
+    // VIDEO LINK
+    if (item.Video) {
+      const videoLink = document.createElement("a");
+      videoLink.className = "icon-link";
+      videoLink.href = item.Video;
+      videoLink.target = "_blank";
+      videoLink.rel = "noopener noreferrer";
+      videoLink.textContent = "Video";
+      links.appendChild(videoLink);
+    }
 
-      links.appendChild(link);
+    // SUPPLEMENTAL LINK
+    if (item.Supplemental) {
+      const supplementalLink = document.createElement("a");
+      supplementalLink.className = "icon-link";
+      supplementalLink.href = item.Supplemental;
+      supplementalLink.target = "_blank";
+      supplementalLink.rel = "noopener noreferrer";
+      supplementalLink.textContent = "Extra";
+      links.appendChild(supplementalLink);
     }
 
     // BUILD
