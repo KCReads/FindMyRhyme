@@ -19,12 +19,13 @@ body {
 }
 
 /* =========================
-   ROW ITEM (MAIN STRUCTURE)
+   CARD (BASE LAYOUT)
    ========================= */
 .card {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 
   width: 100%;
   box-sizing: border-box;
@@ -38,6 +39,8 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 
   transition: 0.15s ease;
+
+  position: relative;
 }
 
 .card:hover {
@@ -46,15 +49,21 @@ body {
 }
 
 /* =========================
-   LEFT SECTION (TITLE)
+   3-COLUMN DESKTOP LAYOUT
    ========================= */
-.top {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-
+.top,
+.keywords,
+.links {
   flex: 1;
-  min-width: 240px;
+  min-width: 0; /* prevents overflow breaking layout */
+  display: flex;
+  align-items: center;
+}
+
+/* left column */
+.top {
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 .title {
@@ -67,34 +76,11 @@ body {
   color: #6b7280;
 }
 
-/* =========================
-   STAR (FAVORITE)
-   ========================= */
-.star {
-  font-size: 25px;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  opacity: 0.4;
-  transition: 0.2s ease;
-}
-
-.star.on {
-  color: #fbbf24;
-  opacity: 1;
-}
-
-/* =========================
-   KEYWORDS (MIDDLE COLUMN)
-   ========================= */
-keywords {
-  display: flex;
+/* middle column */
+.keywords {
+  justify-content: center;
   flex-wrap: wrap;
   gap: 6px;
-
-  flex: 2;
-  align-items: center;
 }
 
 /* pill tags */
@@ -116,14 +102,10 @@ keywords {
 .pill:nth-child(5n+4) { background: #dcfce7; }
 .pill:nth-child(5n+5) { background: #ede9fe; }
 
-/* =========================
-   RIGHT ACTION LINKS
-   ========================= */
+/* right column */
 .links {
-  display: flex;
+  justify-content: flex-end;
   gap: 8px;
-  align-items: center;
-
   flex-shrink: 0;
 }
 
@@ -149,24 +131,7 @@ keywords {
 }
 
 /* =========================
-   DESKTOP (ALIGNED ROW MODE)
-   ========================= */
-@media (min-width: 769px) {
-  .card {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .top,
-  keywords,
-  .links {
-    display: flex;
-    align-items: center;
-  }
-}
-
-/* =========================
-   MOBILE (STACKED MODE)
+   MOBILE LAYOUT
    ========================= */
 @media (max-width: 768px) {
   .card {
@@ -175,53 +140,37 @@ keywords {
     gap: 10px;
   }
 
-  .top {
+  .top,
+  .keywords,
+  .links {
     width: 100%;
-  }
-
-  keywords {
-    width: 100%;
+    justify-content: flex-start;
   }
 
   .links {
-    width: 100%;
     justify-content: flex-end;
   }
-  .card {
-  position: relative;
-  overflow: hidden;
-}
 
-/* LEFT COLOR STRIP */
-.card::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
+  /* optional left accent bar */
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
 
-  width: 15px;
-  border-radius: 16px 0 0 16px;
+    width: 6px;
+    border-radius: 16px 0 0 16px;
 
-  background: linear-gradient(
-    to bottom,
-    #ff6b6b,
-    #feca57,
-    #48dbfb,
-    #1dd1a1,
-    #5f27cd
-  );
+    background: linear-gradient(
+      to bottom,
+      #ff6b6b,
+      #feca57,
+      #48dbfb,
+      #1dd1a1,
+      #5f27cd
+    );
 
-  opacity: 0.9;
-}
-
-/* OPTIONAL: soft tinted background glow */
-.card {
-  background: linear-gradient(
-    to right,
-    rgba(255, 107, 107, 0.04),
-    rgba(72, 219, 251, 0.02),
-    #ffffff
-  );
-}
+    opacity: 0.9;
+  }
 }
