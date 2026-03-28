@@ -1,5 +1,11 @@
 let allData = [];
-let favorites = new Set();
+
+const FAVORITES_KEY = "find-my-rhyme-favorites";
+const EMAIL_KEY = "find-my-rhyme-email";
+const RECENT_KEY = "find-my-rhyme-recent";
+
+let favorites = loadFavorites();
+let recent = loadRecent();
 
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ14cW0LzMG6hPjkdWry9d_X8P_Uag-M84cN00o317GK9CCJVuknQkgbTE-O60P54wU7Wd_Uxkuna2h/pub?gid=1251597746&single=true&output=csv";
@@ -8,7 +14,17 @@ const SHEET_URL =
 const searchInput = document.getElementById("search");
 const searchMode = document.getElementById("searchMode");
 const favoritesOnly = document.getElementById("favoritesOnly");
+const favoritesFirst = document.getElementById("favoritesFirst");
+const recentOnly = document.getElementById("recentOnly");
+const recentFirst = document.getElementById("recentFirst");
+const emailAddress = document.getElementById("emailAddress");
+const emailFavoritesBtn = document.getElementById("emailFavoritesBtn");
+const copyFavoritesBtn = document.getElementById("copyFavoritesBtn");
+const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
 const list = document.getElementById("list");
+
+// LOAD SAVED EMAIL
+loadSavedEmail();
 
 // LOAD CSV
 fetch(SHEET_URL)
@@ -25,38 +41,232 @@ fetch(SHEET_URL)
     });
 
     allData = parsed.data;
-    renderList(allData);
+    filterAndRender();
   })
   .catch((err) => {
     console.error("Failed to load CSV:", err);
-    list.innerHTML = `<div style="padding:16px;">Could not load data.</div>`;
+    list.innerHTML = `<div class="load-error">Could not load data.</div>`;
   });
 
 // EVENTS
 searchInput.addEventListener("input", filterAndRender);
 searchMode.addEventListener("change", filterAndRender);
 favoritesOnly.addEventListener("change", filterAndRender);
+favoritesFirst.addEventListener("change", filterAndRender);
+recentOnly.addEventListener("change", filterAndRender);
+recentFirst.addEventListener("change", filterAndRender);
+
+emailFavoritesBtn.addEventListener("click", emailFavorites);
+copyFavoritesBtn.addEventListener("click", copyFavorites);
+clearFavoritesBtn.addEventListener("click", clearFavorites);
+
+emailAddress.addEventListener("input", () => {
+  try {
+    localStorage.setItem(EMAIL_KEY, emailAddress.value.trim());
+  } catch (err) {
+    console.error("Failed to save email:", err);
+  }
+});
 
 function safeValue(value) {
   return (value || "").toString().toLowerCase().trim();
 }
 
-// FILTER
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem(FAVORITES_KEY);
+    if (!raw) return new Set();
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return new Set();
+
+    return new Set(parsed.map(String));
+  } catch (err) {
+    console.error("Failed to load favorites:", err);
+    return new Set();
+  }
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+  } catch (err) {
+    console.error("Failed to save favorites:", err);
+  }
+}
+
+function loadSavedEmail() {
+  try {
+    const saved = localStorage.getItem(EMAIL_KEY);
+    if (saved) {
+      emailAddress.value = saved;
+    }
+  } catch (err) {
+    console.error("Failed to load saved email:", err);
+  }
+}
+
+function loadRecent() {
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.map(String) : [];
+  } catch (err) {
+    console.error("Failed to load recent items:", err);
+    return [];
+  }
+}
+
+function saveRecent() {
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+  } catch (err) {
+    console.error("Failed to save recent items:", err);
+  }
+}
+
+function markRecent(id) {
+  const itemId = String(id);
+
+  recent = recent.filter((x) => x !== itemId);
+  recent.unshift(itemId);
+  recent = recent.slice(0, 50);
+
+  saveRecent();
+}
+
+function toggleFavorite(itemId) {
+  if (favorites.has(itemId)) {
+    favorites.delete(itemId);
+  } else {
+    favorites.add(itemId);
+  }
+
+  markRecent(itemId);
+  saveFavorites();
+  filterAndRender();
+}
+
+function applyKeywordSearch(keyword) {
+  searchMode.value = "keywords";
+  searchInput.value = keyword;
+  filterAndRender();
+}
+
+function clearFavorites() {
+  if (favorites.size === 0) {
+    alert("You don’t have any favorites yet.");
+    return;
+  }
+
+  const confirmed = confirm("Clear all favorites?");
+  if (!confirmed) return;
+
+  favorites.clear();
+  saveFavorites();
+  filterAndRender();
+}
+
+function getFavoriteItems() {
+  return allData.filter((item) => favorites.has(String(item.ID || "")));
+}
+
+function buildFavoritesText() {
+  const favoriteItems = getFavoriteItems();
+
+  const lines = [
+    "My Find My Rhyme Favorites:",
+    ""
+  ];
+
+  favoriteItems.forEach((item, index) => {
+    lines.push(`${index + 1}. ${item.Title || ""}`);
+
+    const metaParts = [];
+    if (item.Creator) metaParts.push(item.Creator);
+    if (item.Language) metaParts.push(item.Language);
+
+    if (metaParts.length) {
+      lines.push(metaParts.join(" • "));
+    }
+
+    if (item.Video) {
+      lines.push(`Video: ${item.Video}`);
+    }
+
+    if (item.Supplemental) {
+      lines.push(`Extra: ${item.Supplemental}`);
+    }
+
+    lines.push("");
+  });
+
+  return lines.join("\n");
+}
+
+function emailFavorites() {
+  const to = (emailAddress.value || "").trim();
+  const favoriteItems = getFavoriteItems();
+
+  if (favoriteItems.length === 0) {
+    alert("You have no favorites selected yet.");
+    return;
+  }
+
+  const subject = "My Find My Rhyme Favorites";
+  const body = buildFavoritesText();
+
+  const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
+function copyFavorites() {
+  const favoriteItems = getFavoriteItems();
+
+  if (favoriteItems.length === 0) {
+    alert("You have no favorites to copy yet.");
+    return;
+  }
+
+  const text = buildFavoritesText();
+
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      showCopyFeedback();
+    })
+    .catch(() => {
+      alert("Copy failed. Please try again.");
+    });
+}
+
+function showCopyFeedback() {
+  const original = copyFavoritesBtn.textContent;
+  copyFavoritesBtn.textContent = "Copied!";
+  copyFavoritesBtn.disabled = true;
+
+  setTimeout(() => {
+    copyFavoritesBtn.textContent = original;
+    copyFavoritesBtn.disabled = false;
+  }, 1500);
+}
+
+// FILTER + SORT
 function filterAndRender() {
   const query = safeValue(searchInput.value);
   const mode = searchMode.value;
   const favOnly = favoritesOnly.checked;
+  const favFirst = favoritesFirst.checked;
+  const recOnly = recentOnly.checked;
+  const recFirst = recentFirst.checked;
 
-  const filtered = allData.filter((item) => {
-    const itemId = String(item.ID || "");
+  let filtered = allData.filter((item) => {
+    const id = String(item.ID || "");
 
-    if (favOnly && !favorites.has(itemId)) {
-      return false;
-    }
+    if (favOnly && !favorites.has(id)) return false;
+    if (recOnly && !recent.includes(id)) return false;
 
-    if (!query) {
-      return true;
-    }
+    if (!query) return true;
 
     const title = safeValue(item.Title);
     const creator = safeValue(item.Creator);
@@ -80,6 +290,27 @@ function filterAndRender() {
     return true;
   });
 
+  filtered.sort((a, b) => {
+    const aId = String(a.ID || "");
+    const bId = String(b.ID || "");
+
+    const aFav = favorites.has(aId);
+    const bFav = favorites.has(bId);
+
+    const aRec = recent.indexOf(aId);
+    const bRec = recent.indexOf(bId);
+
+    if (recFirst && aRec !== bRec) {
+      return (aRec === -1 ? Infinity : aRec) - (bRec === -1 ? Infinity : bRec);
+    }
+
+    if (favFirst && aFav !== bFav) {
+      return aFav ? -1 : 1;
+    }
+
+    return 0;
+  });
+
   renderList(filtered);
 }
 
@@ -96,6 +327,26 @@ function renderList(data) {
     // LEFT
     const top = document.createElement("div");
     top.className = "top";
+
+    const topMain = document.createElement("div");
+    topMain.className = "top-main";
+
+    const star = document.createElement("button");
+    star.className = "star";
+    star.type = "button";
+    star.textContent = "★";
+    star.setAttribute("aria-label", "Toggle favorite");
+
+    if (favorites.has(itemId)) {
+      star.classList.add("fav");
+    }
+
+    star.addEventListener("click", () => {
+      toggleFavorite(itemId);
+    });
+
+    const textBlock = document.createElement("div");
+    textBlock.className = "text-block";
 
     const title = document.createElement("div");
     title.className = "title";
@@ -127,8 +378,12 @@ function renderList(data) {
       meta.appendChild(language);
     }
 
-    top.appendChild(title);
-    top.appendChild(meta);
+    textBlock.appendChild(title);
+    textBlock.appendChild(meta);
+
+    topMain.appendChild(star);
+    topMain.appendChild(textBlock);
+    top.appendChild(topMain);
 
     // MIDDLE
     const keywords = document.createElement("div");
@@ -139,9 +394,16 @@ function renderList(data) {
       .map((k) => k.trim())
       .filter(Boolean)
       .forEach((k) => {
-        const pill = document.createElement("span");
+        const pill = document.createElement("button");
         pill.className = "pill";
+        pill.type = "button";
         pill.textContent = k;
+        pill.setAttribute("aria-label", `Search keyword ${k}`);
+
+        pill.addEventListener("click", () => {
+          applyKeywordSearch(k);
+        });
+
         keywords.appendChild(pill);
       });
 
@@ -149,35 +411,16 @@ function renderList(data) {
     const links = document.createElement("div");
     links.className = "links";
 
-    const star = document.createElement("button");
-    star.className = "star";
-    star.type = "button";
-    star.textContent = "★";
-    star.setAttribute("aria-label", "Toggle favorite");
-
-    if (favorites.has(itemId)) {
-      star.classList.add("fav");
-    }
-
-    star.addEventListener("click", () => {
-      if (favorites.has(itemId)) {
-        favorites.delete(itemId);
-      } else {
-        favorites.add(itemId);
-      }
-
-      filterAndRender();
-    });
-
-    links.appendChild(star);
-
     if (item.Video) {
       const videoLink = document.createElement("a");
       videoLink.className = "icon-link";
       videoLink.href = item.Video;
       videoLink.target = "_blank";
       videoLink.rel = "noopener noreferrer";
-      videoLink.textContent = "Video";
+      videoLink.textContent = "🎬 Video";
+      videoLink.addEventListener("click", () => {
+        markRecent(itemId);
+      });
       links.appendChild(videoLink);
     }
 
@@ -187,7 +430,10 @@ function renderList(data) {
       supplementalLink.href = item.Supplemental;
       supplementalLink.target = "_blank";
       supplementalLink.rel = "noopener noreferrer";
-      supplementalLink.textContent = "Extra";
+      supplementalLink.textContent = "📎 Extra";
+      supplementalLink.addEventListener("click", () => {
+        markRecent(itemId);
+      });
       links.appendChild(supplementalLink);
     }
 
