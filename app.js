@@ -42,6 +42,7 @@ function filterAndRender() {
     const title = (item.title || "").toLowerCase();
     const creator = (item.creator || "").toLowerCase();
     const keywords = (item.keywords || "").toLowerCase();
+    const language = (item.language || "").toLowerCase();
 
     if (mode === "all") {
       return (
@@ -54,6 +55,7 @@ function filterAndRender() {
     if (mode === "title") return title.includes(query);
     if (mode === "creator") return creator.includes(query);
     if (mode === "keywords") return keywords.includes(query);
+    if (mode === "language") return language.includes(query);
 
     return true;
   });
