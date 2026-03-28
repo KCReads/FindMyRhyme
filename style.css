@@ -33,8 +33,6 @@ body {
   font-family: 'Nunito', sans-serif;
   font-weight: 800;
   font-size: 32px;
-  letter-spacing: 0.4px;
-  line-height: 1;
   color: #ffffff;
   background: linear-gradient(
     135deg,
@@ -45,15 +43,10 @@ body {
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  text-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.28),
-    0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .title-icon {
   font-size: 28px;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 /* PAGE WRAP */
@@ -87,80 +80,48 @@ body {
   border: 1px solid #d8deea;
   background: rgba(255, 255, 255, 0.92);
   font: inherit;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 #search {
-  flex: 1 1 260px;
-  min-width: 0;
-}
-
-#searchMode {
-  flex: 0 0 auto;
+  flex: 1;
 }
 
 .favorites-row {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  align-items: center;
 }
 
 .favorites {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #1f2937;
-}
-
-.favorites input {
-  cursor: pointer;
 }
 
 .email-tools {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  align-items: center;
-}
-
-#emailAddress {
-  min-width: 240px;
-  flex: 1 1 260px;
-}
-
-#emailFavoritesBtn,
-.secondary-btn {
-  cursor: pointer;
-}
-
-#emailFavoritesBtn:hover,
-.secondary-btn:hover {
-  background: #eef6ff;
 }
 
 .secondary-btn {
   background: #fff;
+  cursor: pointer;
 }
 
 .secondary-btn:hover {
   background: #ffe4e6;
-  border-color: #fecaca;
 }
 
 .secondary-btn:disabled {
   opacity: 0.6;
-  cursor: default;
 }
 
 .favorites-note {
   font-size: 12px;
-  color: #4b5563;
   background: rgba(255, 255, 255, 0.6);
   padding: 8px 10px;
   border-radius: 10px;
-  max-width: 700px;
-  line-height: 1.4;
 }
 
 /* LIST */
@@ -172,28 +133,15 @@ body {
   gap: 14px;
 }
 
-.load-error {
-  padding: 16px;
-  background: #ffffff;
-  border-radius: 12px;
-}
-
 /* CARD */
 .card {
   display: flex;
-  align-items: stretch;
   justify-content: space-between;
   gap: 24px;
-  width: 100%;
-  box-sizing: border-box;
   padding: 14px 16px 14px 24px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
   position: relative;
-  overflow: hidden;
 }
 
 .card::before {
@@ -211,71 +159,21 @@ body {
     #1dd1a1,
     #5f27cd
   );
-  border-radius: 16px 0 0 16px;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
-}
-
-/* 3 COLUMN LAYOUT */
-.top,
-.keywords,
-.links {
-  min-width: 0;
-  display: flex;
-}
-
-.top {
-  flex: 1.4;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.keywords {
-  flex: 2;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.links {
-  flex: 1.15;
-  align-items: stretch;
-  justify-content: flex-end;
-  gap: 10px;
-}
+/* COLUMNS */
+.top { flex: 1.4; }
+.keywords { flex: 2; display: flex; flex-wrap: wrap; gap: 6px; }
+.links { flex: 1.2; display: flex; justify-content: flex-end; gap: 10px; }
 
 /* LEFT */
 .top-main {
   display: flex;
-  align-items: center;
   gap: 12px;
-  min-width: 0;
-  width: 100%;
-}
-
-.text-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
 }
 
 .title {
-  font-size: 15px;
   font-weight: 700;
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  color: #6b7280;
-  font-size: 12px;
 }
 
 .creator {
@@ -288,13 +186,8 @@ body {
   font-size: 11px;
   padding: 4px 9px;
   border-radius: 999px;
-  background: #f1f5f9;
   border: 1px solid #e5e7eb;
-  white-space: nowrap;
-  line-height: 1.4;
   cursor: pointer;
-  font-family: inherit;
-  color: #1f2937;
 }
 
 .pill:nth-child(5n+1) { background: #ffe4e6; }
@@ -303,32 +196,18 @@ body {
 .pill:nth-child(5n+4) { background: #dcfce7; }
 .pill:nth-child(5n+5) { background: #ede9fe; }
 
-.pill:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
 .language-pill {
   border-width: 2px;
   font-weight: 700;
 }
 
-/* STAR BUTTON */
+/* STAR */
 .star {
   font-size: 22px;
-  line-height: 1;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 10px;
-  border-radius: 10px;
-  flex-shrink: 0;
   color: #9ca3af;
-  align-self: center;
-}
-
-.star:hover {
-  background: #f1f5f9;
 }
 
 .star.fav {
@@ -337,106 +216,42 @@ body {
 
 /* LINKS */
 .icon-link {
-  font-size: 13px;
-  padding: 0 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 10px;
   background: #f8fafc;
-  color: #1f2937;
-  white-space: nowrap;
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  align-self: stretch;
-  min-height: 100%;
 }
 
-.icon-link:hover {
-  background: #eef6ff;
-}
-
-/* MOBILE */
+/* MOBILE FIXES */
 @media (max-width: 768px) {
-  .header-inner {
-    padding: 12px 12px;
-  }
 
-  .app-header h1 {
-    font-size: 24px;
-    padding: 10px 14px;
-    gap: 8px;
-  }
-
-  .title-icon {
-    font-size: 22px;
-  }
-
-  .page-wrap {
-    padding: 12px;
-  }
-
-  .control-row,
-  .email-tools {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
+  /* 🔑 THIS IS THE IMPORTANT FIX */
   #search,
   #searchMode,
   #emailAddress,
   #emailFavoritesBtn,
   .secondary-btn {
     width: 100%;
-    box-sizing: border-box;
-    padding: 8px 10px;
+    padding: 5px 10px;
+    height: 34px;
+    min-height: 34px;
+    line-height: 1.2;
+    font-size: 14px;
+  }
+
+  .control-row,
+  .email-tools {
+    flex-direction: column;
   }
 
   .card {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 16px 16px 16px 24px;
-  }
-
-  .top,
-  .keywords,
-  .links {
-    width: 100%;
-  }
-
-  .top {
-    align-items: flex-start;
-  }
-
-  .top-main {
-    align-items: flex-start;
-  }
-
-  .keywords {
-    justify-content: flex-start;
-    row-gap: 10px;
-    column-gap: 8px;
-    margin-bottom: 6px;
+    gap: 16px;
   }
 
   .links {
     justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-  }
-
-  .star {
-    min-width: 40px;
-    min-height: 40px;
-    align-self: flex-start;
-  }
-
-  .icon-link {
-    min-height: auto;
-    padding: 8px 12px;
-    align-self: auto;
   }
 }
