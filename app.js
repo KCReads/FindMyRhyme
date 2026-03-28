@@ -1,10 +1,8 @@
 let allData = [];
 let favorites = new Set();
 
-// =========================
-// LOAD CSV (PapaParse)
-// =========================
-fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEiXufRP7C_pdB3ZHz4WB82Zg5JmLSUg_BvjoC7xM5BDqG5PhdZOFg/pub?gid=1251597746&single=true&output=csv")
+// LOAD CSV
+fetch("data.csv")
   .then(res => res.text())
   .then(csv => {
     const parsed = Papa.parse(csv, {
@@ -13,36 +11,28 @@ fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vRpcuB3lP6poEiXufRP7C_pdB
     });
 
     allData = parsed.data;
-
     renderList(allData);
   });
 
-// =========================
-// DOM ELEMENTS
-// =========================
+// DOM
 const searchInput = document.getElementById("search");
 const searchMode = document.getElementById("searchMode");
 const favoritesOnly = document.getElementById("favoritesOnly");
 const list = document.getElementById("list");
 
-// =========================
-// EVENTS (LIVE FILTERING)
-// =========================
+// EVENTS
 searchInput.addEventListener("input", filterAndRender);
 searchMode.addEventListener("change", filterAndRender);
 favoritesOnly.addEventListener("change", filterAndRender);
 
-// =========================
-// FILTER LOGIC
-// =========================
+// FILTER
 function filterAndRender() {
   const query = searchInput.value.toLowerCase().trim();
   const mode = searchMode.value;
   const favOnly = favoritesOnly.checked;
 
-  let filtered = allData.filter(item => {
+  const filtered = allData.filter(item => {
 
-    // FAVORITES FILTER
     if (favOnly && !favorites.has(item.title)) {
       return false;
     }
@@ -71,9 +61,7 @@ function filterAndRender() {
   renderList(filtered);
 }
 
-// =========================
-// RENDER LIST
-// =========================
+// RENDER
 function renderList(data) {
   list.innerHTML = "";
 
@@ -96,7 +84,7 @@ function renderList(data) {
     top.appendChild(title);
     top.appendChild(creator);
 
-    // MIDDLE (KEYWORDS)
+    // MIDDLE
     const keywords = document.createElement("div");
     keywords.className = "keywords";
 
@@ -111,14 +99,18 @@ function renderList(data) {
         keywords.appendChild(pill);
       });
 
-    // RIGHT (LINKS + FAVORITE)
+    // RIGHT
     const links = document.createElement("div");
     links.className = "links";
 
-    // FAVORITE BUTTON
+    // STAR
     const star = document.createElement("button");
-    star.className = "icon-link";
-    star.textContent = favorites.has(item.title) ? "★" : "☆";
+    star.className = "star";
+
+    const isFav = favorites.has(item.title);
+
+    star.textContent = "★";
+    if (isFav) star.classList.add("fav");
 
     star.addEventListener("click", () => {
       if (favorites.has(item.title)) {
@@ -132,7 +124,7 @@ function renderList(data) {
 
     links.appendChild(star);
 
-    // OPTIONAL LINK (if you have one in CSV)
+    // OPTIONAL LINK
     if (item.link) {
       const link = document.createElement("a");
       link.className = "icon-link";
@@ -143,7 +135,7 @@ function renderList(data) {
       links.appendChild(link);
     }
 
-    // BUILD CARD
+    // BUILD
     card.appendChild(top);
     card.appendChild(keywords);
     card.appendChild(links);
