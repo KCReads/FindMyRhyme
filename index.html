@@ -5,35 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Find My Rhyme</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 
 <body>
-  <header>
-    <h1>Find My Rhyme</h1>
+  <header class="app-header">
+    <div class="header-inner">
+      <h1><span class="title-icon">🎵📚</span> Find My Rhyme</h1>
+    </div>
   </header>
 
-  <section class="controls">
-    <div class="control-row">
-      <input id="search" type="text" placeholder="Search..." />
+  <main class="page-wrap">
+    <section class="controls">
+      <div class="control-row">
+        <input id="search" type="text" placeholder="Search..." />
 
-      <select id="searchMode">
-        <option value="all">All</option>
-        <option value="title">Title</option>
-        <option value="keywords">Keywords</option>
-        <option value="language">Language</option>
-        <option value="creator">Creator</option>
-      </select>
-    </div>
+        <select id="searchMode">
+          <option value="all">All</option>
+          <option value="title">Title</option>
+          <option value="keywords">Keywords</option>
+          <option value="language">Language</option>
+          <option value="creator">Creator</option>
+        </select>
+      </div>
 
-    <div class="favorites">
-      <input type="checkbox" id="favoritesOnly" />
-      <label for="favoritesOnly">Favorites only</label>
-    </div>
-  </section>
+      <div class="favorites-row">
+        <div class="favorites">
+          <input type="checkbox" id="favoritesOnly" />
+          <label for="favoritesOnly">Favorites only</label>
+        </div>
 
-  <div id="list"></div>
+        <div class="favorites">
+          <input type="checkbox" id="favoritesFirst" />
+          <label for="favoritesFirst">Favorites first</label>
+        </div>
+
+        <div class="favorites">
+          <input type="checkbox" id="recentOnly" />
+          <label for="recentOnly">Recent only</label>
+        </div>
+
+        <div class="favorites">
+          <input type="checkbox" id="recentFirst" />
+          <label for="recentFirst">Recent first</label>
+        </div>
+      </div>
+
+      <div class="email-tools">
+        <input type="email" id="emailAddress" placeholder="Your email address" />
+        <button id="emailFavoritesBtn" type="button">Email my favorites</button>
+        <button id="copyFavoritesBtn" type="button" class="secondary-btn">Copy favorites</button>
+        <button id="clearFavoritesBtn" type="button" class="secondary-btn">Clear favorites</button>
+      </div>
+
+      <div class="favorites-note">
+        Favorites and recent activity are saved on your device only. They won’t sync across devices or browsers, but you can email or copy your favorites anytime.
+      </div>
+    </section>
+
+    <div id="list"></div>
+  </main>
 
   <script src="app.js"></script>
 </body>
