@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About | Find the Rhyme</title>
+  <title>About | Find My Rhyme</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,36 +12,83 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="plain-page">
-
+<body>
   <header class="app-header">
     <div class="header-inner">
-      <h1><span class="title-icon">🎵📚</span> Find the Rhyme</h1>
+      <h1><span class="title-icon">🎵📚</span> Find My Rhyme</h1>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+      <nav class="nav-bar" id="navBar">
+        <a href="index.html">
+          <span class="menu-icon">🏠</span> Home
+        </a>
+        <a href="about.html" class="active">
+          <span class="menu-icon">ℹ️</span> About
+        </a>
+        <a href="policy.html">
+          <span class="menu-icon">📜</span> Policy
+        </a>
+        <a href="https://forms.gle/4j4qhV8JBzf7BU8N7" target="_blank" rel="noopener noreferrer">
+          <span class="menu-icon">💡</span> Suggestions
+        </a>
+        <a href="https://forms.gle/k3yuZy2Xrfu323mb9" target="_blank" rel="noopener noreferrer">
+          <span class="menu-icon">⚠️</span> Report
+        </a>
+      </nav>
     </div>
   </header>
 
   <main class="page-wrap">
-    <a href="index.html" class="back-link">← Back</a>
+    <section class="info-page">
+      <div class="info-card">
+        <div class="info-card-header">
+          <h2 class="info-title">About</h2>
+          <a href="index.html" class="back-link">← Back to Search</a>
+        </div>
 
-    <section class="about-card">
-      <h2>About</h2>
+        <!-- IMAGE -->
+        <img src="images/hey.png" alt="KC Reads" class="about-photo-right">
 
-      <!-- IMAGE -->
-      <img src="hey.png" alt="KC Reads" class="about-photo-right">
+        <p>Hi, I’m Kathryn — online as KC Reads.</p>
 
-      <p>Hi, my name is Kathryn, online as KC Reads.</p>
+        <p>
+          This project started because I wanted storytime planning to feel a little easier—and a lot less time-consuming.
+          As a children’s librarian, I’ve spent plenty of time digging through notes, bookmarks, and random documents trying to find the right song or rhyme for the moment. I wanted a simple way to search, find, and use what I needed without overthinking it.
+          So this is that—a growing collection of songs and rhymes you can search by title or keyword, all in one place. Everything here is chosen with early literacy in mind, but also with real storytimes in mind—the kind where kids are wiggly, caregivers are watching, and your plan may or may not survive first contact.
+        </p>
 
-      <p>This project started because I wanted storytime planning to feel a little easier—and a lot less time-consuming.</p>
+        <p>
+          This isn’t meant to tell you how to run your storytime. It’s just here to give you options, save you time, and maybe spark an idea or two when you need it.
+        </p>
 
-      <p>As a children’s librarian, I’ve spent plenty of time digging through notes, bookmarks, and random documents trying to find the right song or rhyme for the moment.</p>
-
-      <p>I wanted a simple way to search, find, and use what I needed without overthinking it.</p>
-
-      <p>So this is that—a growing collection of songs and rhymes you can search by title or keyword.</p>
-
-      <p>I love puppets, picture books, and anything a little silly.</p>
+        <p>
+          A little about me: I have my MLIS and a background in early childhood education (including a long-expired, yet still highly valuable, CDA). I’ve been working in libraries for about 10 years, leading storytimes for ages newborn through 5, and now I oversee core programming for my library system.
+          I love puppets, picture books, and anything a little bit silly. Outside of work, I spend a lot of time making up songs that mostly just entertain me—and mildly concern my dog.
+        </p>
+        
+      </div>
     </section>
   </main>
 
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navBar = document.getElementById("navBar");
+
+    if (menuToggle && navBar) {
+      menuToggle.addEventListener("click", () => {
+        const isOpen = navBar.classList.toggle("open");
+        menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+  </script>
 </body>
 </html>
