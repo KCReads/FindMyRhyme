@@ -21,7 +21,38 @@ body {
   margin: 0 auto;
   padding: 14px 16px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
+.nav-bar {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-bar a {
+  text-decoration: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.nav-bar a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+
+
+
+
 
 .app-header h1 {
   margin: 0;
