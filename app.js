@@ -274,6 +274,23 @@ function showCopyFeedback() {
   }, 1500);
 }
 
+function copyID(id, element) {
+  navigator.clipboard.writeText(id)
+    .then(() => {
+      const original = element.textContent;
+      element.textContent = "Copied!";
+      element.disabled = true;
+
+      setTimeout(() => {
+        element.textContent = `ID: ${id}`;
+        element.disabled = false;
+      }, 1200);
+    })
+    .catch(() => {
+      alert("Copy failed. Please try again.");
+    });
+}
+
 // FILTER + SORT
 function filterAndRender() {
   const query = safeValue(searchInput.value);
@@ -331,7 +348,7 @@ function filterAndRender() {
       return aFav ? -1 : 1;
     }
 
-    return 0;
+    return (a.Title || "").localeCompare(b.Title || "");
   });
 
   renderList(filtered);
@@ -341,11 +358,30 @@ function filterAndRender() {
 function renderList(data) {
   list.innerHTML = "";
 
+  if (!data.length) {
+    list.innerHTML = `<div class="load-error">No results found.</div>`;
+    return;
+  }
+
   data.forEach((item) => {
     const itemKey = getItemKey(item);
 
     const card = document.createElement("div");
     card.className = "card";
+
+    if (item.ID) {
+      const idLabel = document.createElement("button");
+      idLabel.className = "card-id";
+      idLabel.type = "button";
+      idLabel.textContent = `ID: ${item.ID}`;
+      idLabel.setAttribute("aria-label", `Copy ID ${item.ID}`);
+
+      idLabel.addEventListener("click", () => {
+        copyID(item.ID, idLabel);
+      });
+
+      card.appendChild(idLabel);
+    }
 
     // LEFT
     const top = document.createElement("div");
