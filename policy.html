@@ -3,32 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Policy | Find the Rhyme</title>
+  <title>Policy | Find My Rhyme</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="plain-page">
-
+<body>
   <header class="app-header">
     <div class="header-inner">
-      <h1><span class="title-icon">🎵📚</span> Find the Rhyme</h1>
+      <h1><span class="title-icon">🎵📚</span> Find My Rhyme</h1>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+      <nav class="nav-bar" id="navBar">
+        <a href="index.html">
+          <span class="menu-icon">🏠</span> Home
+        </a>
+        <a href="about.html">
+          <span class="menu-icon">ℹ️</span> About
+        </a>
+        <a href="policy.html" class="active">
+          <span class="menu-icon">📜</span> Policy
+        </a>
+        <a href="https://forms.gle/4j4qhV8JBzf7BU8N7" target="_blank" rel="noopener noreferrer">
+          <span class="menu-icon">💡</span> Suggestions
+        </a>
+        <a href="https://forms.gle/k3yuZy2Xrfu323mb9" target="_blank" rel="noopener noreferrer">
+          <span class="menu-icon">⚠️</span> Report
+        </a>
+      </nav>
     </div>
   </header>
 
   <main class="page-wrap">
-    <a href="index.html" class="back-link">← Back</a>
+    <section class="info-page">
+      <div class="info-card">
+        <div class="info-card-header">
+          <h2 class="info-title">Content &amp; Use Policy</h2>
+          <a href="index.html" class="back-link">← Back to Search</a>
+        </div>
 
-    <section class="policy-card">
-      <h2>Policy</h2>
+        <p>
+          This resource is designed to support, not replace, the personal knowledge, creativity, and professional expertise that make storytime meaningful. Tools such as AI may be used to help expand ideas, improve efficiency, and increase access to materials, but all content is thoughtfully reviewed to ensure it offers value in supporting early literacy and engaging young audiences.
+        </p>
 
-      <p>This site is intended as a helpful tool for storytime planning.</p>
+        <p>
+          Some songs or rhymes included here may have been created or supported by AI. Their inclusion reflects a professional determination that they may be useful in a storytime or educational setting. AI-assisted content will be clearly labeled so that users can make informed choices.
+        </p>
 
-      <p>External links may change or break over time.</p>
+        <p>
+          Because many children’s songs and rhymes come from a long-standing folkloric tradition, some entries may have a problematic or historically harmful background. When included, this is done to promote awareness while also offering alternative options that support the same early literacy goals. Entries with a problematic history will be clearly labeled.
+        </p>
 
-      <p>Please use your professional judgment when selecting materials.</p>
+        <p>
+          This resource is intended to provide options, not prescriptions. Every presenter knows their audience best, and you are encouraged to use your own judgment when selecting materials for your programs.
+        </p>
+
+        <h3 class="info-subtitle">Privacy</h3>
+
+        <p>
+          Favorites and email-sharing features are stored locally on your device. No personal information is collected or stored externally.
+        </p>
+      </div>
     </section>
   </main>
 
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navBar = document.getElementById("navBar");
+
+    if (menuToggle && navBar) {
+      menuToggle.addEventListener("click", () => {
+        const isOpen = navBar.classList.toggle("open");
+        menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+    }
+  </script>
 </body>
 </html>
