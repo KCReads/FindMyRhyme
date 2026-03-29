@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Find My Rhyme</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
@@ -17,21 +17,21 @@
   <header class="app-header">
     <div class="header-inner">
       <h1><span class="title-icon">🎵📚</span> Find My Rhyme</h1>
-    <nav class="nav-bar">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="policy.html">Policy</a>
-      <a href="https://forms.gle/4j4qhV8JBzf7BU8N7">Suggestions</a>
-      <a href="https://forms.gle/k3yuZy2Xrfu323mb9">Report an Error</a>
-    </nav>
-  </div>
-</header>
+
+      <nav class="nav-bar">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="policy.html">Policy</a>
+        <a href="https://forms.gle/4j4qhV8JBzf7BU8N7" target="_blank" rel="noopener noreferrer">💡 Suggestions</a>
+        <a href="https://forms.gle/k3yuZy2Xrfu323mb9" target="_blank" rel="noopener noreferrer">⚠️ Report</a>
+      </nav>
+    </div>
+  </header>
 
   <main class="page-wrap">
     <section class="controls">
       <div class="control-row">
         <input id="search" type="text" placeholder="Search..." />
-
         <select id="searchMode">
           <option value="all">All</option>
           <option value="title">Title</option>
@@ -71,7 +71,7 @@
       </div>
 
       <div class="favorites-note">
-        Favorites and recent activity are saved on your device only. They won’t sync across devices or browsers, but you can email or copy your favorites anytime.
+        Favorites and recent activity are saved on your device only.
       </div>
     </section>
 
