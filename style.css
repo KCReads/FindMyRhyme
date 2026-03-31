@@ -43,6 +43,14 @@ body {
   min-width: 0;
 }
 
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+
 .logo {
   height: 52px;
   width: auto;
@@ -64,7 +72,7 @@ body {
 }
 
 .tagline {
-  font-size: 14px;
+  font-size: 16px;
   font-style: italic;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
@@ -588,40 +596,54 @@ body {
 /* MOBILE */
 @media (max-width: 768px) {
   .header-inner {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
     gap: 10px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+    flex: none;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
   }
 
   .logo {
     height: 38px;
   }
 
-  .brand {
-    gap: 8px;
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
   .brand-title {
     font-size: 22px;
-    gap: 6px;
+    line-height: 1.1;
+    margin: 0;
   }
 
   .tagline {
+    display: block;
     font-size: 13px;
+    margin-top: 2px;
   }
 
   .menu-toggle {
     display: block !important;
-    margin-left: auto;
+    margin-left: 0;
+    justify-self: end;
+    align-self: start;
   }
 
   .nav-bar {
     display: none;
     width: 100%;
+    grid-column: 1 / -1;
     flex-direction: column;
     gap: 8px;
     margin-top: 6px;
