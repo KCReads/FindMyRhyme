@@ -17,6 +17,8 @@ const favoritesOnly = document.getElementById("favoritesOnly");
 const favoritesFirst = document.getElementById("favoritesFirst");
 const recentOnly = document.getElementById("recentOnly");
 const recentFirst = document.getElementById("recentFirst");
+const excludeAI = document.getElementById("excludeAI");
+const excludeProblematic = document.getElementById("excludeProblematic");
 const emailAddress = document.getElementById("emailAddress");
 const emailFavoritesBtn = document.getElementById("emailFavoritesBtn");
 const copyFavoritesBtn = document.getElementById("copyFavoritesBtn");
@@ -58,6 +60,8 @@ favoritesOnly?.addEventListener("change", filterAndRender);
 favoritesFirst?.addEventListener("change", filterAndRender);
 recentOnly?.addEventListener("change", filterAndRender);
 recentFirst?.addEventListener("change", filterAndRender);
+excludeAI?.addEventListener("change", filterAndRender);
+excludeProblematic?.addEventListener("change", filterAndRender);
 
 emailFavoritesBtn?.addEventListener("click", emailFavorites);
 copyFavoritesBtn?.addEventListener("click", copyFavorites);
@@ -86,14 +90,51 @@ function normalizeItem(item, index) {
   const normalized = {
     ID: (item.ID || item.Id || item.id || "").toString().trim(),
     Title: (item.Title || "").toString().trim(),
-    Keywords: (item.Keywords || "").toString().trim(),
+    Early_Literacy_Skill: (item.Early_Literacy_Skill || "").toString().trim(),
+    Physical_Skill: (item.Physical_Skill || "").toString().trim(),
+    Cognitive_Skill: (item.Cognitive_Skill || "").toString().trim(),
+    Social_Emotional_Skill: (item.Social_Emotional_Skill || "").toString().trim(),
+    Concept: (item.Concept || "").toString().trim(),
+    Theme: (item.Theme || "").toString().trim(),
+    Tune: (item.Tune || "").toString().trim(),
     Language: (item.Language || "").toString().trim(),
+    Prop: (item.Prop || item.Props || "").toString().trim(),
+    Music_Genre: (item.Music_Genre || item["Music Genre"] || "").toString().trim(),
+    Format: (item.Format || "").toString().trim(),
+    Music_Source: (item.Music_Source || item["Music Source"] || "").toString().trim(),
+    AI_Supported: (item.AI_Supported || item["AI-Supported"] || "").toString().trim(),
+    Problematic_History: (
+      item.Problematic_History ||
+      item["Problematic_History"] ||
+      item["Problematic History"] ||
+      ""
+    ).toString().trim(),
     Creator: (item.Creator || "").toString().trim(),
     Video: (item.Video || "").toString().trim(),
     Supplemental: (item.Supplemental || "").toString().trim()
   };
 
   normalized._key = normalized.ID ? `id:${normalized.ID}` : `row:${index}`;
+
+  normalized._keywordSearch = [
+    normalized.Early_Literacy_Skill,
+    normalized.Physical_Skill,
+    normalized.Cognitive_Skill,
+    normalized.Social_Emotional_Skill,
+    normalized.Concept,
+    normalized.Theme,
+    normalized.Tune,
+    normalized.Language,
+    normalized.Prop,
+    normalized.Music_Genre,
+    normalized.Format,
+    normalized.Music_Source,
+    normalized.AI_Supported,
+    normalized.Problematic_History
+  ]
+    .filter(Boolean)
+    .join(" | ");
+
   return normalized;
 }
 
@@ -210,7 +251,7 @@ function buildFavoritesText() {
   const favoriteItems = getFavoriteItems();
 
   const lines = [
-    "My Find My Rhyme Favorites:",
+    "My Find a Rhyme Favorites:",
     ""
   ];
 
@@ -254,7 +295,7 @@ function emailFavorites() {
     return;
   }
 
-  const subject = "My Find My Rhyme Favorites";
+  const subject = "My Find a Rhyme Favorites";
   const body = buildFavoritesText();
 
   const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -308,7 +349,35 @@ function copyID(id, element) {
     .catch(() => {
       alert("Copy failed. Please try again.");
     });
-  }
+}
+
+function splitValues(value) {
+  return (value || "")
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+function addPills(container, value, className, clickHandler, labelPrefix = "Search keyword") {
+  splitValues(value).forEach((text) => {
+    const pill = document.createElement("button");
+    pill.className = `pill ${className}`;
+    pill.type = "button";
+    pill.textContent = text;
+    pill.setAttribute("aria-label", `${labelPrefix} ${text}`);
+
+    pill.addEventListener("click", () => {
+      clickHandler(text);
+    });
+
+    container.appendChild(pill);
+  });
+}
+
+function hasTruthyFlag(value) {
+  const normalized = safeValue(value);
+  return normalized !== "" && normalized !== "no" && normalized !== "false" && normalized !== "0";
+}
 
 // FILTER + SORT
 function filterAndRender() {
@@ -320,18 +389,22 @@ function filterAndRender() {
   const favFirst = favoritesFirst?.checked || false;
   const recOnly = recentOnly?.checked || false;
   const recFirst = recentFirst?.checked || false;
+  const excludeAIOn = excludeAI?.checked || false;
+  const excludeProblematicOn = excludeProblematic?.checked || false;
 
   let filtered = allData.filter((item) => {
     const itemKey = getItemKey(item);
 
     if (favOnly && !favorites.has(itemKey)) return false;
     if (recOnly && !recent.includes(itemKey)) return false;
+    if (excludeAIOn && hasTruthyFlag(item.AI_Supported)) return false;
+    if (excludeProblematicOn && hasTruthyFlag(item.Problematic_History)) return false;
 
     if (!query) return true;
 
     const title = safeValue(item.Title);
     const creator = safeValue(item.Creator);
-    const keywords = safeValue(item.Keywords);
+    const keywords = safeValue(item._keywordSearch);
     const language = safeValue(item.Language);
 
     if (mode === "all") {
@@ -456,41 +529,18 @@ function renderList(data) {
     const keywords = document.createElement("div");
     keywords.className = "keywords";
 
-    (item.Language || "")
-      .split(",")
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .forEach((l) => {
-        const languagePill = document.createElement("button");
-        languagePill.className = "pill language-pill";
-        languagePill.type = "button";
-        languagePill.textContent = l;
-        languagePill.setAttribute("aria-label", `Search language ${l}`);
-
-        languagePill.addEventListener("click", () => {
-          applyLanguageSearch(l);
-        });
-
-        keywords.appendChild(languagePill);
-      });
-
-    (item.Keywords || "")
-      .split(",")
-      .map((k) => k.trim())
-      .filter(Boolean)
-      .forEach((k) => {
-        const pill = document.createElement("button");
-        pill.className = "pill";
-        pill.type = "button";
-        pill.textContent = k;
-        pill.setAttribute("aria-label", `Search keyword ${k}`);
-
-        pill.addEventListener("click", () => {
-          applyKeywordSearch(k);
-        });
-
-        keywords.appendChild(pill);
-      });
+    addPills(keywords, item.Early_Literacy_Skill, "early-literacy-pill", applyKeywordSearch);
+    addPills(keywords, item.Physical_Skill, "physical-pill", applyKeywordSearch);
+    addPills(keywords, item.Cognitive_Skill, "cognitive-pill", applyKeywordSearch);
+    addPills(keywords, item.Social_Emotional_Skill, "social-emotional-pill", applyKeywordSearch);
+    addPills(keywords, item.Concept, "concept-pill", applyKeywordSearch);
+    addPills(keywords, item.Theme, "theme-pill", applyKeywordSearch);
+    addPills(keywords, item.Tune, "tune-pill", applyKeywordSearch);
+    addPills(keywords, item.Language, "language-pill", applyLanguageSearch, "Search language");
+    addPills(keywords, item.Prop, "prop-pill", applyKeywordSearch);
+    addPills(keywords, item.Music_Genre, "music-genre-pill", applyKeywordSearch);
+    addPills(keywords, item.Format, "format-pill", applyKeywordSearch);
+    addPills(keywords, item.Music_Source, "music-source-pill", applyKeywordSearch);
 
     // RIGHT
     const links = document.createElement("div");
@@ -524,6 +574,37 @@ function renderList(data) {
       });
 
       links.appendChild(supplementalLink);
+    }
+
+    const statusFlags = document.createElement("div");
+    statusFlags.className = "status-flags";
+
+    if (hasTruthyFlag(item.AI_Supported)) {
+      const aiFlag = document.createElement("button");
+      aiFlag.className = "status-flag ai-flag";
+      aiFlag.type = "button";
+      aiFlag.textContent = "💻 AI-Supported";
+      aiFlag.setAttribute("aria-label", "Search keyword AI-Supported");
+      aiFlag.addEventListener("click", () => {
+        applyKeywordSearch("AI-Supported");
+      });
+      statusFlags.appendChild(aiFlag);
+    }
+
+    if (hasTruthyFlag(item.Problematic_History)) {
+      const problematicFlag = document.createElement("button");
+      problematicFlag.className = "status-flag warning-flag";
+      problematicFlag.type = "button";
+      problematicFlag.textContent = "🚩 Problematic History";
+      problematicFlag.setAttribute("aria-label", "Search keyword Problematic History");
+      problematicFlag.addEventListener("click", () => {
+        applyKeywordSearch("Problematic History");
+      });
+      statusFlags.appendChild(problematicFlag);
+    }
+
+    if (statusFlags.childNodes.length) {
+      links.appendChild(statusFlags);
     }
 
     card.appendChild(top);

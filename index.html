@@ -2,100 +2,115 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Find My Rhyme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Rhyme</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
-
 <body>
   <header class="app-header">
     <div class="header-inner">
-      <h1><span class="title-icon">🎵📚</span> Find My Rhyme</h1>
+      <div class="brand">
+        <img src="find_a_rhyme_logo.png" alt="Find a Rhyme logo" class="logo" />
+        <h1 class="brand-title">
+          Find a Rhyme
+          <span class="tagline">Less searching. More singing.</span>
+        </h1>
+      </div>
 
       <button
         class="menu-toggle"
         id="menuToggle"
-        type="button"
-        aria-label="Toggle menu"
+        aria-label="Toggle navigation"
         aria-expanded="false"
+        aria-controls="navBar"
       >
         ☰
       </button>
 
-      <nav class="nav-bar" id="navBar">
-        <a href="index.html" class="active">
-          <span class="menu-icon">🏠</span> Home
-        </a>
-        <a href="about.html">
-          <span class="menu-icon">ℹ️</span> About
-        </a>
-        <a href="policy.html">
-          <span class="menu-icon">📜</span> Policy
-        </a>
-        <a href="https://forms.gle/4j4qhV8JBzf7BU8N7" target="_blank" rel="noopener noreferrer">
-          <span class="menu-icon">💡</span> Suggestions
-        </a>
-        <a href="https://forms.gle/k3yuZy2Xrfu323mb9" target="_blank" rel="noopener noreferrer">
-          <span class="menu-icon">⚠️</span> Report
-        </a>
-      </nav>
+     <nav class="nav-bar" id="navBar">
+  <a href="index.html" class="active"><span class="menu-icon">🏠</span>Home</a>
+  <a href="about.html"><span class="menu-icon">👤</span>About</a>
+  <a href="policy.html"><span class="menu-icon">📜</span>Policy &amp; Disclaimer</a>
+  <a href="contact.html"><span class="menu-icon">✉️</span>Contact</a>
+</nav>
     </div>
   </header>
 
   <main class="page-wrap">
     <section class="controls">
       <div class="control-row">
-        <input id="search" type="text" placeholder="Search..." />
-        <select id="searchMode">
-          <option value="all">All</option>
+        <input
+          type="text"
+          id="search"
+          placeholder="Search titles, creators, keywords, or language"
+          aria-label="Search"
+        />
+
+        <select id="searchMode" aria-label="Search mode">
+          <option value="all">Search All</option>
           <option value="title">Title</option>
+          <option value="creator">Creator</option>
           <option value="keywords">Keywords</option>
           <option value="language">Language</option>
-          <option value="creator">Creator</option>
         </select>
       </div>
 
-      <div class="favorites-row">
-        <div class="favorites">
+      <div class="control-row favorites-row">
+        <label class="toggle-filter">
           <input type="checkbox" id="favoritesOnly" />
-          <label for="favoritesOnly">Favorites only</label>
-        </div>
+          Favorites Only
+        </label>
 
-        <div class="favorites">
+        <label class="toggle-filter">
           <input type="checkbox" id="favoritesFirst" />
-          <label for="favoritesFirst">Favorites first</label>
-        </div>
+          Favorites First
+        </label>
 
-        <div class="favorites">
+        <label class="toggle-filter">
           <input type="checkbox" id="recentOnly" />
-          <label for="recentOnly">Recent only</label>
-        </div>
+          Recent Only
+        </label>
 
-        <div class="favorites">
+        <label class="toggle-filter">
           <input type="checkbox" id="recentFirst" />
-          <label for="recentFirst">Recent first</label>
-        </div>
+          Recent First
+        </label>
+
+        <label class="toggle-filter">
+          <input type="checkbox" id="excludeAI" />
+          Exclude AI-Supported
+        </label>
+
+        <label class="toggle-filter">
+          <input type="checkbox" id="excludeProblematic" />
+          Exclude Problematic History
+        </label>
       </div>
 
       <div class="email-tools">
-        <input type="email" id="emailAddress" placeholder="Your email address" />
-        <button id="emailFavoritesBtn" type="button">Email my favorites</button>
-        <button id="copyFavoritesBtn" type="button" class="secondary-btn">Copy favorites</button>
-        <button id="clearFavoritesBtn" type="button" class="secondary-btn">Clear favorites</button>
+        <input
+          type="email"
+          id="emailAddress"
+          placeholder="Email address for favorites"
+          aria-label="Email address"
+        />
+        <button id="emailFavoritesBtn" type="button">Email Favorites</button>
+        <button id="copyFavoritesBtn" type="button" class="secondary-btn">Copy Favorites</button>
+        <button id="clearFavoritesBtn" type="button" class="secondary-btn">Clear Favorites</button>
       </div>
 
       <div class="favorites-note">
-        Favorites and recent activity are saved on your device only. They won’t sync across devices or browsers, but you can email or copy your favorites anytime.
+        Click a keyword or language tag to search by it. Click the star to save favorites.
       </div>
     </section>
 
-    <div id="list"></div>
+    <section id="list" aria-live="polite"></section>
   </main>
 
   <script src="app.js"></script>
