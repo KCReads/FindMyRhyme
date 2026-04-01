@@ -335,10 +335,10 @@ body {
   flex: 1.1;
   min-width: 0;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding-top: 26px;
 }
 
 /* LEFT */
@@ -544,14 +544,20 @@ body {
   border-radius: 10px;
   background: #f8fafc;
   text-decoration: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  gap: 8px;
   color: inherit;
   white-space: nowrap;
 }
 
 .icon-link:hover {
   background: #eef2f7;
+}
+
+.link-icon {
+  font-size: 15px;
+  line-height: 1;
 }
 
 /* STATUS FLAGS */
@@ -561,7 +567,7 @@ body {
   flex-direction: column;
   align-items: flex-end;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 2px;
 }
 
 .status-flag {
@@ -787,6 +793,8 @@ body {
 
   .links {
     justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 0;
   }
 
   .status-flags {
