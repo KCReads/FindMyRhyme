@@ -1,16 +1,16 @@
 :root {
-  --kw1:  #C8555C;  /* Early Literacy Skill */
-  --kw2:  #D98C3F;  /* Developmental Skill */
-  --kw3:  #D9C46B;  /* Social Skill */
-  --kw4:  #7FAF7A;  /* Theme */
-  --kw5:  #5FA8A0;  /* Tune */
-  --kw6:  #5C8FA8;  /* Language */
-  --kw7:  #6C7FD1;  /* Prop */
-  --kw8:  #8A5FAF;  /* Music Genre */
-  --kw9:  #A65C9A;  /* Song Type */
-  --kw10: #D16A9B;  /* Recorded Music */
-  --kw11: #9AA5B1;  /* AI-Supported */
-  --kw12: #7A6C85;  /* Problematic History */
+  --kw1:  #D3777D;  /* Early Literacy Skill */
+  --kw2:  #E1A365;  /* Developmental Skill */
+  --kw3:  #E1D089;  /* Social Skill */
+  --kw4:  #99BF95;  /* Theme */
+  --kw5:  #7FB9B3;  /* Tune */
+  --kw6:  #7DA5B9;  /* Language */
+  --kw7:  #8999DA;  /* Prop */
+  --kw8:  #A17FBF;  /* Music Genre */
+  --kw9:  #B87DAE;  /* Song Type */
+  --kw10: #DA88AF;  /* Recorded Music */
+  --kw11: #AEB7C1;  /* AI-Supported */
+  --kw12: #95899D;  /* Problematic History */
 }
 
 /* GLOBAL SIZING */
