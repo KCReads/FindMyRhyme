@@ -191,8 +191,9 @@ body {
 
 .filter-stack {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 .filter-row {
@@ -781,8 +782,26 @@ body {
 }
 
 @media (min-width: 769px) {
-  .more-filters-panel {
+  .filter-stack {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .filter-row-excludes,
+  .filter-row-recents,
+  .filter-row-favorites,
+  .more-filters-panel,
+  .email-tools-collapsible {
     display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .more-filters-panel {
+    flex-direction: row;
   }
 
   .filter-toggle-btn {
@@ -792,6 +811,7 @@ body {
   .more-filters-panel[hidden] {
     display: flex !important;
   }
+
 }
 
 /* MOBILE */
