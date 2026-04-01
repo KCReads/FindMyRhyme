@@ -1,4 +1,4 @@
-const CSV_PATH = "https://docs.google.com/spreadsheets/d/1DSZ0UhAlhQEgVvr4S9WHCyHGBrJSTOzpGjXpVz15vkY/edit?usp=sharing"
+const CSV_PATH = "https://docs.google.com/spreadsheets/d/1DSZ0UhAlhQEgVvr4S9WHCyHGBrJSTOzpGjXpVz15vkY/edit?gid=1251597746#gid=1251597746"
 ;
 
 const CATEGORY_CONFIG = [
