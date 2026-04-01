@@ -176,7 +176,7 @@ function parseBooleanQuery(input) {
   const include = [];
   const exclude = [];
 
-  // Operators only count when written like:
+  // Operators only count when written with spaces:
   // cats + dogs - frogs
   // Hyphenated terms like AI-Supported stay intact.
   const tokens = raw.split(/\s(?=[+-]\s)/);
@@ -214,9 +214,60 @@ function buildBooleanQuery(includeTerms, excludeTerms) {
   return pieces.join(" ").trim();
 }
 
+function getSearchCategoryForTerm(term) {
+  const normalizedTerm = lower(term);
+  if (!normalizedTerm) return null;
+
+  if (normalizedTerm === "ai-supported" || normalizedTerm === "problematic history") {
+    return "keywords";
+  }
+
+  const creatorMatch = allRows.some(row => lower(getCreator(row)) === normalizedTerm);
+  if (creatorMatch) return "creator";
+
+  const languageMatch = allRows.some(row =>
+    getLanguageValuesByRow(row).some(value => lower(value) === normalizedTerm)
+  );
+  if (languageMatch) return "language";
+
+  const keywordMatch = allRows.some(row =>
+    getKeywordValuesByRow(row).some(value => lower(value) === normalizedTerm)
+  );
+  if (keywordMatch) return "keywords";
+
+  return null;
+}
+
+function updateSearchModeFromTerms() {
+  const searchMode = document.getElementById("searchMode");
+  const searchInput = document.getElementById("search");
+
+  if (!searchMode || !searchInput) return;
+
+  const parsed = parseBooleanQuery(searchInput.value || "");
+  const allTerms = [...parsed.include, ...parsed.exclude];
+
+  if (!allTerms.length) {
+    searchMode.value = "all";
+    return;
+  }
+
+  const categories = new Set();
+
+  allTerms.forEach(term => {
+    const category = getSearchCategoryForTerm(term);
+    if (category) categories.add(category);
+  });
+
+  if (categories.size === 1) {
+    searchMode.value = [...categories][0];
+  } else {
+    searchMode.value = "all";
+  }
+}
+
 function addIncludeTermToSearch(term, mode = null) {
   const searchInput = document.getElementById("search");
-  const searchMode = document.getElementById("searchMode");
   const current = parseBooleanQuery(searchInput?.value || "");
   const normalizedTerm = lower(term);
 
@@ -229,9 +280,7 @@ function addIncludeTermToSearch(term, mode = null) {
     searchInput.value = buildBooleanQuery(include, exclude);
   }
 
-  if (searchMode && mode) {
-    searchMode.value = mode;
-  }
+  updateSearchModeFromTerms();
 }
 
 function addExcludeTermToSearch(term) {
@@ -247,11 +296,12 @@ function addExcludeTermToSearch(term) {
   if (searchInput) {
     searchInput.value = buildBooleanQuery(include, exclude);
   }
+
+  updateSearchModeFromTerms();
 }
 
 function removeTermFromSearch(term) {
   const searchInput = document.getElementById("search");
-  const searchMode = document.getElementById("searchMode");
   const current = parseBooleanQuery(searchInput?.value || "");
   const normalizedTerm = lower(term);
 
@@ -264,9 +314,7 @@ function removeTermFromSearch(term) {
     searchInput.value = newValue;
   }
 
-  if (!newValue && searchMode) {
-    searchMode.value = "all";
-  }
+  updateSearchModeFromTerms();
 }
 
 function isTermIncludedInSearch(term) {
@@ -282,19 +330,13 @@ function isTermExcludedInSearch(term) {
 }
 
 function toggleSearchTerm(term, mode) {
-  const searchInput = document.getElementById("search");
-  const searchMode = document.getElementById("searchMode");
-
   if (isTermIncludedInSearch(term)) {
     removeTermFromSearch(term);
   } else {
     addIncludeTermToSearch(term, mode);
   }
 
-  if (!normalize(searchInput?.value || "") && searchMode) {
-    searchMode.value = "all";
-  }
-
+  updateSearchModeFromTerms();
   renderList();
 }
 
@@ -529,12 +571,6 @@ function renderList() {
       }
 
       creator.addEventListener("click", () => {
-        const searchMode = document.getElementById("searchMode");
-
-        if (searchMode) {
-          searchMode.value = "creator";
-        }
-
         toggleSearchTerm(creatorName, "creator");
       });
     } else {
@@ -646,6 +682,39 @@ function buildFavoritesEmailText() {
   }).join("\n\n");
 }
 
+function setupMobileFilterToggle() {
+  const toggleBtn = document.getElementById("moreFiltersToggle");
+  const panel = document.getElementById("moreFiltersPanel");
+
+  if (!toggleBtn || !panel) return;
+
+  if (window.innerWidth <= 768) {
+    panel.hidden = true;
+    toggleBtn.setAttribute("aria-expanded", "false");
+  } else {
+    panel.hidden = false;
+    toggleBtn.setAttribute("aria-expanded", "true");
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    if (window.innerWidth > 768) return;
+
+    const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+    toggleBtn.setAttribute("aria-expanded", String(!isExpanded));
+    panel.hidden = isExpanded;
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      panel.hidden = false;
+      toggleBtn.setAttribute("aria-expanded", "true");
+    } else {
+      panel.hidden = true;
+      toggleBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
 function setup() {
   const search = document.getElementById("search");
   const searchMode = document.getElementById("searchMode");
@@ -655,12 +724,7 @@ function setup() {
 
   if (search) {
     search.addEventListener("input", () => {
-      const searchModeEl = document.getElementById("searchMode");
-
-      if (!normalize(search.value) && searchModeEl) {
-        searchModeEl.value = "all";
-      }
-
+      updateSearchModeFromTerms();
       renderList();
     });
   }
@@ -772,5 +836,6 @@ function loadCSV() {
 
 document.addEventListener("DOMContentLoaded", () => {
   setup();
+  setupMobileFilterToggle();
   loadCSV();
 });

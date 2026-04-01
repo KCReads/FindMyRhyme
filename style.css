@@ -189,6 +189,18 @@ body {
   flex: 0 0 auto;
 }
 
+.filter-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .favorites-row {
   display: flex;
   gap: 12px;
@@ -209,6 +221,38 @@ body {
 
 .toggle-filter input {
   margin: 0;
+}
+
+.filter-toggle-btn {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8deea;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  font: inherit;
+  font-weight: 700;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.filter-toggle-arrow {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.filter-toggle-btn[aria-expanded="true"] .filter-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.more-filters-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .email-tools {
@@ -736,6 +780,20 @@ body {
   display: none !important;
 }
 
+@media (min-width: 769px) {
+  .more-filters-panel {
+    display: flex !important;
+  }
+
+  .filter-toggle-btn {
+    display: none !important;
+  }
+
+  .more-filters-panel[hidden] {
+    display: flex !important;
+  }
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   .header-inner {
@@ -808,6 +866,21 @@ body {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .filter-toggle-btn {
+    display: flex;
+  }
+
+  .more-filters-panel[hidden] {
+    display: none !important;
   }
 
   #search,

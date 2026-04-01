@@ -64,52 +64,71 @@
         <button id="resetSearchBtn" type="button" class="secondary-btn">Reset</button>
       </div>
 
-      <div class="control-row favorites-row">
-        <label class="toggle-filter">
-          <input type="checkbox" id="favoritesOnly" />
-          Favorites Only
-        </label>
+      <div class="filter-stack">
+        <div class="filter-row filter-row-excludes">
+          <label class="toggle-filter">
+            <input type="checkbox" id="excludeAI" />
+            Exclude AI-Supported
+          </label>
 
-        <label class="toggle-filter">
-          <input type="checkbox" id="favoritesFirst" />
-          Favorites First
-        </label>
+          <label class="toggle-filter">
+            <input type="checkbox" id="excludeProblematic" />
+            Exclude Problematic History
+          </label>
+        </div>
 
-        <label class="toggle-filter">
-          <input type="checkbox" id="recentOnly" />
-          Recent Only
-        </label>
+        <button
+          type="button"
+          class="filter-toggle-btn"
+          id="moreFiltersToggle"
+          aria-expanded="false"
+          aria-controls="moreFiltersPanel"
+        >
+          <span>More filters &amp; favorites</span>
+          <span class="filter-toggle-arrow">▾</span>
+        </button>
 
-        <label class="toggle-filter">
-          <input type="checkbox" id="recentFirst" />
-          Recent First
-        </label>
+        <div class="more-filters-panel" id="moreFiltersPanel" hidden>
+          <div class="filter-row filter-row-recents">
+            <label class="toggle-filter">
+              <input type="checkbox" id="recentOnly" />
+              Recent Only
+            </label>
 
-        <label class="toggle-filter">
-          <input type="checkbox" id="excludeAI" />
-          Exclude AI-Supported
-        </label>
+            <label class="toggle-filter">
+              <input type="checkbox" id="recentFirst" />
+              Recent First
+            </label>
+          </div>
 
-        <label class="toggle-filter">
-          <input type="checkbox" id="excludeProblematic" />
-          Exclude Problematic History
-        </label>
-      </div>
+          <div class="filter-row filter-row-favorites">
+            <label class="toggle-filter">
+              <input type="checkbox" id="favoritesOnly" />
+              Favorites Only
+            </label>
 
-      <div class="email-tools">
-        <input
-          type="email"
-          id="emailAddress"
-          placeholder="Email address for favorites"
-          aria-label="Email address"
-        />
-        <button id="emailFavoritesBtn" type="button">Email Favorites</button>
-        <button id="copyFavoritesBtn" type="button" class="secondary-btn">Copy Favorites</button>
-        <button id="clearFavoritesBtn" type="button" class="secondary-btn">Clear Favorites</button>
+            <label class="toggle-filter">
+              <input type="checkbox" id="favoritesFirst" />
+              Favorites First
+            </label>
+          </div>
+
+          <div class="email-tools email-tools-collapsible">
+            <input
+              type="email"
+              id="emailAddress"
+              placeholder="Email address for favorites"
+              aria-label="Email address"
+            />
+            <button id="emailFavoritesBtn" type="button">Email Favorites</button>
+            <button id="copyFavoritesBtn" type="button" class="secondary-btn">Copy Favorites</button>
+            <button id="clearFavoritesBtn" type="button" class="secondary-btn">Clear Favorites</button>
+          </div>
+        </div>
       </div>
 
       <div class="favorites-note">
-        Click a keyword or language tag to toggle that filter on or off. Click the star to save favorites.
+        Use + to require a term and - to exclude one. Click a keyword, creator, language, AI-Supported, or Problematic History tag to toggle it in the search bar.
       </div>
     </section>
 
