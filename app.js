@@ -176,6 +176,9 @@ function parseBooleanQuery(input) {
   const include = [];
   const exclude = [];
 
+  // Operators only count when written like:
+  // cats + dogs - frogs
+  // Hyphenated terms like AI-Supported stay intact.
   const tokens = raw.split(/\s(?=[+-]\s)/);
 
   tokens.forEach(token => {
@@ -518,19 +521,21 @@ function renderList() {
     creator.textContent = creatorName ? `Creator: ${creatorName}` : "";
 
     if (creatorName) {
-      creator.addEventListener("click", () => {
-        const searchInput = document.getElementById("search");
-        const searchMode = document.getElementById("searchMode");
+      if (
+        document.getElementById("searchMode")?.value === "creator" &&
+        isTermIncludedInSearch(creatorName)
+      ) {
+        creator.classList.add("active-creator");
+      }
 
-        if (searchInput) {
-          searchInput.value = creatorName;
-        }
+      creator.addEventListener("click", () => {
+        const searchMode = document.getElementById("searchMode");
 
         if (searchMode) {
           searchMode.value = "creator";
         }
 
-        renderList();
+        toggleSearchTerm(creatorName, "creator");
       });
     } else {
       creator.disabled = true;

@@ -356,6 +356,7 @@ body {
   font-weight: 700;
   word-break: break-word;
   padding-right: 10px;
+  font-size: 1.15em;
 }
 
 .meta {
@@ -366,6 +367,34 @@ body {
   font-size: 12px;
   color: #6b7280;
   word-break: break-word;
+}
+
+.creator-search {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+
+.creator-search:hover {
+  opacity: 0.85;
+}
+
+.creator-search:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.active-creator {
+  background: rgba(72, 118, 187, 0.14);
+  color: #2f5f9d;
+  padding: 2px 6px;
 }
 
 /* GROUPED KEYWORDS */
@@ -839,25 +868,4 @@ body {
   .info-subtitle {
     font-size: 18px;
   }
-
-  .creator-search {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.creator-search:hover {
-  text-decoration: underline;
-}
-
-.creator-search:disabled {
-  cursor: default;
-  text-decoration: none;
-}
-
 }
